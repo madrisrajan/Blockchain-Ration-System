@@ -1,0 +1,196 @@
+---
+Organizations:
+    - &OrdererOrg
+      Name: OrdererOrg
+      ID: OrdererMSP
+      MSPDir: crypto-config/ordererOrganizations/example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('OrdererMSP.member')"
+          Writers:
+              Type: Signature
+              Rule: "OR('OrdererMSP.member')"
+          Admins:
+              Type: Signature
+              Rule: "OR('OrdererMSP.admin')"
+
+    - &Citizens
+      Name: CitizensMSP
+      ID: CitizensMSP
+      MSPDir: crypto-config/peerOrganizations/citizens.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('CitizensMSP.admin', 'CitizensMSP.peer', 'CitizensMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('CitizensMSP.admin', 'CitizensMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('CitizensMSP.admin')"
+
+    - &Central_Government
+      Name: Central_GovernmentMSP
+      ID: Central_GovernmentMSP
+      MSPDir: crypto-config/peerOrganizations/central_gov.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('Central_GovernmentMSP.admin', 'Central_GovernmentMSP.peer', 'Central_GovernmentMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('Central_GovernmentMSP.admin', 'Central_GovernmentMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('Central_GovernmentMSP.admin')"
+
+    - &State_Government
+      Name: State_GovernmentMSP
+      ID: State_GovernmentMSP
+      MSPDir: crypto-config/peerOrganizations/state_gov.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('State_GovernmentMSP.admin', 'State_GovernmentMSP.peer', 'State_GovernmentMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('State_GovernmentMSP.admin', 'State_GovernmentMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('State_GovernmentMSP.admin')"
+
+    - &District_Office
+      Name: District_OfficeMSP
+      ID: District_OfficeMSP
+      MSPDir: crypto-config/peerOrganizations/district_office.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('District_OfficeMSP.admin', 'District_OfficeMSP.peer', 'District_OfficeMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('District_OfficeMSP.admin', 'District_OfficeMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('District_OfficeMSP.admin')"
+
+    - &Ration_shops
+      Name: Ration_shopsMSP
+      ID: Ration_shopsMSP
+      MSPDir: crypto-config/peerOrganizations/ration_shops.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('Ration_shopsMSP.admin', 'Ration_shopsMSP.peer', 'Ration_shopsMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('Ration_shopsMSP.admin', 'Ration_shopsMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('Ration_shopsMSP.admin')"
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_4_3: true
+        V1_3: false
+        V1_1: false
+    Orderer: &OrdererCapabilities
+        V1_4_2: true
+        V1_1: false
+    Application: &ApplicationCapabilities
+        V1_4_2: true
+        V1_3: false
+        V1_2: false
+        V1_1: false
+
+Application: &ApplicationDefaults
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaultsOUs
+    OrdererType: solo
+    Addresses:
+        - orderer.example.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 10
+        AbsoluteMaxBytes: 99 MB
+        PreferredMaxBytes: 512 KB
+
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+
+    Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+    LEANOrdererGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                    - *Citizens
+                    - *Central_Government
+                    - *State_Government
+                    - *District_Office
+                    - *Ration_shops
+    LEANChannel:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Citizens
+                - *Central_Government
+                - *State_Government
+                - *District_Office
+                - *Ration_shops
+            Capabilities:
+                <<: *ApplicationCapabilities
