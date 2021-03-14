@@ -15,6 +15,66 @@ Organizations:
               Type: Signature
               Rule: "OR('OrdererMSP.admin')"
 
+    - &Central_Government
+      Name: CentralGovernmentMSP
+      ID: CentralGovernmentMSP
+      MSPDir: crypto-config/peerOrganizations/central_gov.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('CentralGovernmentMSP.admin', 'CentralGovernmentMSP.peer', 'CentralGovernmentMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('CentralGovernmentMSP.admin', 'CentralGovernmentMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('CentralGovernmentMSP.admin')"
+
+    - &State_Government
+      Name: StateGovernmentMSP
+      ID: StateGovernmentMSP
+      MSPDir: crypto-config/peerOrganizations/state_gov.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('StateGovernmentMSP.admin', 'StateGovernmentMSP.peer', 'StateGovernmentMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('StateGovernmentMSP.admin', 'StateGovernmentMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('StateGovernmentMSP.admin')"
+
+    - &District_Office
+      Name: DistrictOfficeMSP
+      ID: DistrictOfficeMSP
+      MSPDir: crypto-config/peerOrganizations/district_office.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('DistrictOfficeMSP.admin', 'DistrictOfficeMSP.peer', 'DistrictOfficeMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('DistrictOfficeMSP.admin', 'DistrictOfficeMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('DistrictOfficeMSP.admin')"
+
+    - &Ration_shops
+      Name: RationshopsMSP
+      ID: RationshopsMSP
+      MSPDir: crypto-config/peerOrganizations/ration_shops.example.com/msp
+      Policies:
+          Readers:
+              Type: Signature
+              Rule: "OR('RationshopsMSP.admin', 'RationshopsMSP.peer', 'RationshopsMSP.client')"
+          Writers:
+              Type: Signature
+              Rule: "OR('RationshopsMSP.admin', 'RationshopsMSP.client')"
+          Admins:
+              Type: Signature
+              Rule: "OR('RationshopsMSP.admin')"
+
     - &Citizens
       Name: CitizensMSP
       ID: CitizensMSP
@@ -29,66 +89,6 @@ Organizations:
           Admins:
               Type: Signature
               Rule: "OR('CitizensMSP.admin')"
-
-    - &Central_Government
-      Name: Central_GovernmentMSP
-      ID: Central_GovernmentMSP
-      MSPDir: crypto-config/peerOrganizations/central_gov.example.com/msp
-      Policies:
-          Readers:
-              Type: Signature
-              Rule: "OR('Central_GovernmentMSP.admin', 'Central_GovernmentMSP.peer', 'Central_GovernmentMSP.client')"
-          Writers:
-              Type: Signature
-              Rule: "OR('Central_GovernmentMSP.admin', 'Central_GovernmentMSP.client')"
-          Admins:
-              Type: Signature
-              Rule: "OR('Central_GovernmentMSP.admin')"
-
-    - &State_Government
-      Name: State_GovernmentMSP
-      ID: State_GovernmentMSP
-      MSPDir: crypto-config/peerOrganizations/state_gov.example.com/msp
-      Policies:
-          Readers:
-              Type: Signature
-              Rule: "OR('State_GovernmentMSP.admin', 'State_GovernmentMSP.peer', 'State_GovernmentMSP.client')"
-          Writers:
-              Type: Signature
-              Rule: "OR('State_GovernmentMSP.admin', 'State_GovernmentMSP.client')"
-          Admins:
-              Type: Signature
-              Rule: "OR('State_GovernmentMSP.admin')"
-
-    - &District_Office
-      Name: District_OfficeMSP
-      ID: District_OfficeMSP
-      MSPDir: crypto-config/peerOrganizations/district_office.example.com/msp
-      Policies:
-          Readers:
-              Type: Signature
-              Rule: "OR('District_OfficeMSP.admin', 'District_OfficeMSP.peer', 'District_OfficeMSP.client')"
-          Writers:
-              Type: Signature
-              Rule: "OR('District_OfficeMSP.admin', 'District_OfficeMSP.client')"
-          Admins:
-              Type: Signature
-              Rule: "OR('District_OfficeMSP.admin')"
-
-    - &Ration_shops
-      Name: Ration_shopsMSP
-      ID: Ration_shopsMSP
-      MSPDir: crypto-config/peerOrganizations/ration_shops.example.com/msp
-      Policies:
-          Readers:
-              Type: Signature
-              Rule: "OR('Ration_shopsMSP.admin', 'Ration_shopsMSP.peer', 'Ration_shopsMSP.client')"
-          Writers:
-              Type: Signature
-              Rule: "OR('Ration_shopsMSP.admin', 'Ration_shopsMSP.client')"
-          Admins:
-              Type: Signature
-              Rule: "OR('Ration_shopsMSP.admin')"
 
 Capabilities:
     Channel: &ChannelCapabilities
@@ -120,7 +120,7 @@ Application: &ApplicationDefaults
     Capabilities:
         <<: *ApplicationCapabilities
 
-Orderer: &OrdererDefaultsOUs
+Orderer: &OrdererDefaults
     OrdererType: solo
     Addresses:
         - orderer.example.com:7050
@@ -176,21 +176,21 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Citizens
                     - *Central_Government
                     - *State_Government
                     - *District_Office
                     - *Ration_shops
+                    - *Citizens
     LEANChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Citizens
                 - *Central_Government
                 - *State_Government
                 - *District_Office
                 - *Ration_shops
+                - *Citizens
             Capabilities:
                 <<: *ApplicationCapabilities
