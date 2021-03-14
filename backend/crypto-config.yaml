@@ -6,7 +6,7 @@ OrdererOrgs:
       - Hostname: orderer
 
 PeerOrgs:
-  - Name: Central Government
+  - Name: Central_Government
     Domain: central_gov.example.com
     EnableNodeOUs: true
     Template:
@@ -14,7 +14,7 @@ PeerOrgs:
     Users:
       Count: 1
 
-  - Name: State Government
+  - Name: State_Government
     Domain: state_gov.example.com
     EnableNodeOUs: true
     Template:
@@ -22,7 +22,7 @@ PeerOrgs:
     Users:
       Count: 1
 
-      Name: District Office
+  - Name: District_Office
     Domain: district_office.example.com
     EnableNodeOUs: true
     Template:
@@ -30,7 +30,7 @@ PeerOrgs:
     Users:
       Count: 1
 
-      Name: Ration shops
+  - Name: Ration_shops
     Domain: ration_shops.example.com
     EnableNodeOUs: true
     Template:
@@ -38,7 +38,7 @@ PeerOrgs:
     Users:
       Count: 1
 
-      Name: Citizens
+  - Name: Citizens
     Domain: citizens.example.com
     EnableNodeOUs: true
     Template:

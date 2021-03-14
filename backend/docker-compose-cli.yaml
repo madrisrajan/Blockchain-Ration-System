@@ -1,0 +1,212 @@
+version: "2"
+
+volumes:
+    orderer.example.com:
+    peer0.central_gov.example.com:
+    peer0.state_gov.example.com:
+    peer0.district_office.example.com:
+    peer0.ration_shops.example.com:
+    peer0.citizens.example.com:
+    caCentral:
+    caState:
+    caDistrict:
+    caRation:
+    caCitizens:
+
+networks:
+    leannet:
+
+services:
+    orderer.example.com:
+        extends:
+            file: base/docker-compose-base.yaml
+            service: orderer.example.com
+        container_name: orderer.example.com
+        networks:
+            - leannet
+
+    peer0.central_gov.example.com:
+        container_name: peer0.central_gov.example.com
+        extends:
+            file: base/docker-compose-base.yaml
+            service: peer0.central_gov.example.com
+        networks:
+            - leannet
+        depends_on:
+            - couchdb.peer0.central_gov.example.com
+
+    peer0.state_gov.example.com:
+        container_name: peer0.state_gov.example.com
+        extends:
+            file: base/docker-compose-base.yaml
+            service: peer0.state_gov.example.com
+        networks:
+            - leannet
+        depends_on:
+            - couchdb.peer0.state_gov.example.com
+
+    peer0.district_office.example.com:
+        container_name: peer0.district_office.example.com
+        extends:
+            file: base/docker-compose-base.yaml
+            service: peer0.district_office.example.com
+        networks:
+            - leannet
+        depends_on:
+            - couchdb.peer0.district_office.example.com
+
+    peer0.ration_shops.example.com:
+        container_name: peer0.ration_shops.example.com
+        extends:
+            file: base/docker-compose-base.yaml
+            service: peer0.ration_shops.example.com
+        networks:
+            - leannet
+        depends_on:
+            - couchdb.peer0.ration_shops.example.com
+
+    peer0.citizens.example.com:
+        container_name: peer0.citizens.example.com
+        extends:
+            file: base/docker-compose-base.yaml
+            service: peer0.citizens.example.com
+        networks:
+            - leannet
+        depends_on:
+            - couchdb.peer0.citizens.example.com
+
+    caCentral:
+        container_name: caCentral
+        extends:
+            file: base/docker-compose-base.yaml
+            service: caCentral
+        networks:
+            - leannet
+
+    caState:
+        container_name: caState
+        extends:
+            file: base/docker-compose-base.yaml
+            service: caState
+        networks:
+            - leannet
+
+    caDistrict:
+        container_name: caDistrict
+        extends:
+            file: base/docker-compose-base.yaml
+            service: caDistrict
+        networks:
+            - leannet
+
+    caRation:
+        container_name: caRation
+        extends:
+            file: base/docker-compose-base.yaml
+            service: caRation
+        networks:
+            - leannet
+
+    caCitizens:
+        container_name: caCitizens
+        extends:
+            file: base/docker-compose-base.yaml
+            service: caCitizens
+        networks:
+            - leannet
+
+    couchdb.peer0.central_gov.example.com:
+        container_name: couchdb.peer0.central_gov.example.com
+        image: hyperledger/fabric-couchdb
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        ports:
+            - "5984:5984"
+        networks:
+            - leannet
+
+    couchdb.peer0.state_gov.example.com:
+        container_name: couchdb.peer0.state_gov.example.com
+        image: hyperledger/fabric-couchdb
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        ports:
+            - "6984:5984"
+        networks:
+            - leannet
+
+    couchdb.peer0.district_office.example.com:
+        container_name: couchdb.peer0.district_office.example.com
+        image: hyperledger/fabric-couchdb
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        ports:
+            - "7984:5984"
+        networks:
+            - leannet
+
+    couchdb.peer0.ration_shops.example.com:
+        container_name: couchdb.peer0.ration_shops.example.com
+        image: hyperledger/fabric-couchdb
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        ports:
+            - "8984:5984"
+        networks:
+            - leannet
+
+    couchdb.peer0.citizens.example.com:
+        container_name: couchdb.peer0.citizens.example.com
+        image: hyperledger/fabric-couchdb
+        environment:
+            - COUCHDB_USER=admin
+            - COUCHDB_PASSWORD=adminpw
+        ports:
+            - "9984:5984"
+        networks:
+            - leannet
+
+    cli:
+        container_name: cli
+        image: hyperledger/fabric-tools:$IMAGE_TAG
+        tty: true
+        stdin_open: true
+        environment:
+            - GOPATH=/opt/gopath
+            - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+            #- FABRIC_LOGGING_SPEC=DEBUG
+            - FABRIC_LOGGING_SPEC=INFO
+            - CORE_PEER_ID=cli
+            - CORE_PEER_ADDRESS=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=CitizenMSP
+            - CORE_PEER_TLS_ENABLED=true
+            - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls/server.crt
+            - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls/server.key
+            - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls/ca.crt
+            - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/users/Admin@central_gov.example.com/msp
+        working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+        command: /bin/bash
+        volumes:
+            - /var/run/:/host/var/run/
+            - ./../chaincode/:/opt/gopath/src/
+            - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+            - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+            - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        depends_on:
+            - orderer.example.com
+            - peer0.central_gov.example.com
+            - peer0.state_gov.example.com
+            - peer0.district_office.example.com
+            - peer0.ration_shops.example.com
+            - peer0.citizens.example.com
+            - caCitizen
+            - caState
+            - caDistrict
+            - caRation
+            - caCitizens
+        networks:
+            - leannet
