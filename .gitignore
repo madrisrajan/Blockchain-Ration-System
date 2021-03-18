@@ -1,4 +1,4 @@
 backend/channel-artifacts/
-backend/crypto-config
+backend/crypto-config/
 chaincode/github.com/
 backend/base/docker-compose-base.yaml
