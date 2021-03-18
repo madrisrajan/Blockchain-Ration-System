@@ -203,7 +203,7 @@ services:
             - peer0.district_office.example.com
             - peer0.ration_shops.example.com
             - peer0.citizens.example.com
-            - caCitizen
+            - caCentral
             - caState
             - caDistrict
             - caRation

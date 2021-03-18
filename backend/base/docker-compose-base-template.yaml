@@ -1,0 +1,220 @@
+version: "2"
+
+services:
+    orderer.example.com:
+        container_name: orderer.example.com
+        extends:
+            file: peer-base.yaml
+            service: orderer-base
+        volumes:
+            - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
+            - orderer.example.com:/var/hyperledger/production/orderer
+        ports:
+            - 7050:7050
+
+    peer0.central_gov.example.com:
+        container_name: peer0.central_gov.example.com
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        environment:
+            - CORE_PEER_ID=peer0.central_gov.example.com
+            - CORE_PEER_ADDRESS=peer0.central_gov.example.com:7051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.central_gov.example.com:7052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+            #- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.state_gov.example.com:8051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=CentralGovernmentMSP
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.central_gov.example.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        volumes:
+            - /var/run/:/host/var/run/
+            - ../crypto-config/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../crypto-config/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls:/etc/hyperledger/fabric/tls
+            - peer0.central_gov.example.com:/var/hyperledger/production
+        ports:
+            - 7051:7051
+
+    peer0.state_gov.example.com:
+        container_name: peer0.state_gov.example.com
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        environment:
+            - CORE_PEER_ID=peer0.state_gov.example.com
+            - CORE_PEER_ADDRESS=peer0.state_gov.example.com:8051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.state_gov.example.com:8052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.state_gov.example.com:8051
+            #- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=StateGovernmentMSP
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.state_gov.example.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        volumes:
+            - /var/run/:/host/var/run/
+            - ../crypto-config/peerOrganizations/state_gov.example.com/peers/peer0.state_gov.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../crypto-config/peerOrganizations/state_gov.example.com/peers/peer0.state_gov.example.com/tls:/etc/hyperledger/fabric/tls
+            - peer0.state_gov.example.com:/var/hyperledger/production
+        ports:
+            - 8051:8051
+
+    peer0.district_office.example.com:
+        container_name: peer0.district_office.example.com
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        environment:
+            - CORE_PEER_ID=peer0.district_office.example.com
+            - CORE_PEER_ADDRESS=peer0.district_office.example.com:9051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.district_office.example.com:9052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.district_office.example.com:9051
+            #- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=DistrictOfficeMSP
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.district_office.example.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        volumes:
+            - /var/run/:/host/var/run/
+            - ../crypto-config/peerOrganizations/district_office.example.com/peers/peer0.district_office.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../crypto-config/peerOrganizations/district_office.example.com/peers/peer0.district_office.example.com/tls:/etc/hyperledger/fabric/tls
+            - peer0.district_office.example.com:/var/hyperledger/production
+        ports:
+            - 9051:9051
+
+    peer0.ration_shops.example.com:
+        container_name: peer0.ration_shops.example.com
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        environment:
+            - CORE_PEER_ID=peer0.ration_shops.example.com
+            - CORE_PEER_ADDRESS=peer0.ration_shops.example.com:10051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.ration_shops.example.com:10052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.ration_shops.example.com:10051
+            #- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=RationshopsMSP
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.ration_shops.example.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        volumes:
+            - /var/run/:/host/var/run/
+            - ../crypto-config/peerOrganizations/ration_shops.example.com/peers/peer0.ration_shops.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../crypto-config/peerOrganizations/ration_shops.example.com/peers/peer0.ration_shops.example.com/tls:/etc/hyperledger/fabric/tls
+            - peer0.ration_shops.example.com:/var/hyperledger/production
+        ports:
+            - 10051:10051
+
+    peer0.citizens.example.com:
+        container_name: peer0.citizens.example.com
+        extends:
+            file: peer-base.yaml
+            service: peer-base
+        environment:
+            - CORE_PEER_ID=peer0.citizens.example.com
+            - CORE_PEER_ADDRESS=peer0.citizens.example.com:11051
+            - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+            - CORE_PEER_CHAINCODEADDRESS=peer0.citizens.example.com:11052
+            - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.citizens.example.com:11051
+            #- CORE_PEER_GOSSIP_BOOTSTRAP=peer0.central_gov.example.com:7051
+            - CORE_PEER_LOCALMSPID=CitizensMSP
+            - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.citizens.example.com:5984
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
+            - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=adminpw
+        volumes:
+            - /var/run/:/host/var/run/
+            - ../crypto-config/peerOrganizations/citizens.example.com/peers/peer0.citizens.example.com/msp:/etc/hyperledger/fabric/msp
+            - ../crypto-config/peerOrganizations/citizens.example.com/peers/peer0.citizens.example.com/tls:/etc/hyperledger/fabric/tls
+            - peer0.citizens.example.com:/var/hyperledger/production
+        ports:
+            - 11051:11051
+
+    caCentral:
+        image: hyperledger/fabric-ca:$IMAGE_TAG
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-central_gov
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.central_gov.example.com-cert.pem
+            - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY
+            - FABRIC_CA_SERVER_PORT=7054
+        ports:
+            - "7054:7054"
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.central_gov.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA1_PRIVATE_KEY -b admin:adminpw -d'
+        volumes:
+            - ../crypto-config/peerOrganizations/central_gov.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+
+    caState:
+        image: hyperledger/fabric-ca:$IMAGE_TAG
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-state_gov
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.state_gov.example.com-cert.pem
+            - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY
+            - FABRIC_CA_SERVER_PORT=8054
+        ports:
+            - "8054:8054"
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.state_gov.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA2_PRIVATE_KEY -b admin:adminpw -d'
+        volumes:
+            - ../crypto-config/peerOrganizations/state_gov.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+
+    caDistrict:
+        image: hyperledger/fabric-ca:$IMAGE_TAG
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-district_office
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.district_office.example.com-cert.pem
+            - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY
+            - FABRIC_CA_SERVER_PORT=9054
+        ports:
+            - "9054:9054"
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.district_office.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA3_PRIVATE_KEY -b admin:adminpw -d'
+        volumes:
+            - ../crypto-config/peerOrganizations/district_office.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+
+    caRation:
+        image: hyperledger/fabric-ca:$IMAGE_TAG
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-ration_shops
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.ration_shops.example.com-cert.pem
+            - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY
+            - FABRIC_CA_SERVER_PORT=10054
+        ports:
+            - "10054:10054"
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.ration_shops.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA4_PRIVATE_KEY -b admin:adminpw -d'
+        volumes:
+            - ../crypto-config/peerOrganizations/ration_shops.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+
+    caCitizens:
+        image: hyperledger/fabric-ca:$IMAGE_TAG
+        environment:
+            - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+            - FABRIC_CA_SERVER_CA_NAME=ca-citizens
+            - FABRIC_CA_SERVER_TLS_ENABLED=true
+            - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.citizens.example.com-cert.pem
+            - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/CA5_PRIVATE_KEY
+            - FABRIC_CA_SERVER_PORT=11054
+        ports:
+            - "11054:11054"
+        command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.citizens.example.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/CA5_PRIVATE_KEY -b admin:adminpw -d'
+        volumes:
+            - ../crypto-config/peerOrganizations/citizens.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
