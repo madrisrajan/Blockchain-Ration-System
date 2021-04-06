@@ -2,3 +2,8 @@ backend/channel-artifacts/
 backend/crypto-config/
 chaincode/github.com/
 backend/base/docker-compose-base.yaml
+chaincode/centralgovcc/vendor/
+chaincode/citizencc/vendor/
+chaincode/districtofficecc/vendor/
+chaincode/rationshopcc/vendor/
+chaincode/stategovcc/vendor/
