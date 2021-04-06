@@ -1,0 +1,45 @@
+{
+    "name": "supply-chain-producer",
+    "version": "1.0.0",
+    "client": {
+        "organization": "${ORG}",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "${ORG}": {
+            "mspid": "${ORGMSP}MSP",
+            "peers": ["peer0.${ORG}.lean.com"],
+            "certificateAuthorities": ["ca.${ORG}.lean.com"]
+        }
+    },
+    "peers": {
+        "peer0.${ORG}.lean.com": {
+            "url": "grpcs://localhost:${P0PORT}",
+            "tlsCACerts": {
+                "pem": "${PEERPEM}"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.${ORG}.lean.com",
+                "hostnameOverride": "peer0.${ORG}.lean.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.${ORG}.lean.com": {
+            "url": "https://localhost:${CAPORT}",
+            "caName": "ca-${ORG}",
+            "tlsCACerts": {
+                "pem": "${CAPEM}"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

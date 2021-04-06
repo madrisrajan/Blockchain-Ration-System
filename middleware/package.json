@@ -1,7 +1,6 @@
 {
   "name": "middleware",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +14,6 @@
     "fabric-client": "^1.4.17",
     "fabric-network": "^2.2.5",
     "ipfs-http-client": "^49.0.4"
-  }
+  },
+  "description": ""
 }
