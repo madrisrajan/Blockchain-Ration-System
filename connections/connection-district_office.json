@@ -1,0 +1,45 @@
+{
+    "name": "supply-chain-producer",
+    "version": "1.0.0",
+    "client": {
+        "organization": "district_office",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "district_office": {
+            "mspid": "DistrictOfficeMSP",
+            "peers": ["peer0.district_office.lean.com"],
+            "certificateAuthorities": ["ca.district_office.lean.com"]
+        }
+    },
+    "peers": {
+        "peer0.district_office.lean.com": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIIChTCCAiygAwIBAgIRANABZh+dEMld6Rf6WNA4O7owCgYIKoZIzj0EAwIwgYwx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSQwIgYDVQQKDBtkaXN0cmljdF9vZmZpY2UuZXhhbXBsZS5jb20x\nKjAoBgNVBAMMIXRsc2NhLmRpc3RyaWN0X29mZmljZS5leGFtcGxlLmNvbTAeFw0y\nMTA0MDYyMDQyMDBaFw0zMTA0MDQyMDQyMDBaMIGMMQswCQYDVQQGEwJVUzETMBEG\nA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEkMCIGA1UE\nCgwbZGlzdHJpY3Rfb2ZmaWNlLmV4YW1wbGUuY29tMSowKAYDVQQDDCF0bHNjYS5k\naXN0cmljdF9vZmZpY2UuZXhhbXBsZS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMB\nBwNCAATwxLFyAXHGUeDm6W/GuwiOiIcVLRmgDZ5oR2uZGQrZ+ACBn5JTFl9U/p2n\nqRYvphdKhcwLbxykGts+zSUiWKwAo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0O\nBCIEIJs6pLJYZvLRV42yFVbsOJUIonJYYiT6KCzGWJ0oMaCEMAoGCCqGSM49BAMC\nA0cAMEQCIH7phEoqtWfelPkXVvWseABBDFuiw6xTlHPJzeY3hSMYAiAdcxrt0RQj\nE7FikXn9I3i/Bo97QTMkEk+mMkMOG3rKRA==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.district_office.lean.com",
+                "hostnameOverride": "peer0.district_office.lean.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.district_office.lean.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca-district_office",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICfzCCAiWgAwIBAgIQHT1fvP/cLOGl0h5NzntwFjAKBggqhkjOPQQDAjCBiTEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xJDAiBgNVBAoMG2Rpc3RyaWN0X29mZmljZS5leGFtcGxlLmNvbTEn\nMCUGA1UEAwweY2EuZGlzdHJpY3Rfb2ZmaWNlLmV4YW1wbGUuY29tMB4XDTIxMDQw\nNjIwNDIwMFoXDTMxMDQwNDIwNDIwMFowgYkxCzAJBgNVBAYTAlVTMRMwEQYDVQQI\nEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSQwIgYDVQQKDBtk\naXN0cmljdF9vZmZpY2UuZXhhbXBsZS5jb20xJzAlBgNVBAMMHmNhLmRpc3RyaWN0\nX29mZmljZS5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABNh3\nFdyFaq45btaGSczjtZvt/hrFW1haN94YaXdBHUK5xe6eT+XdPR1YIAPw4r/e/7Zr\nOIFbDHAnMR2OukhgpLejbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggr\nBgEFBQcDAgYIKwYBBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgk/SH\nAgCFHTnc3BblspP10AyCmm1+qpYfG10KQItFwE4wCgYIKoZIzj0EAwIDSAAwRQIh\nAKX75d1el93MA+F/h6NK/5HXUFOsIslMYWgFdFKli98fAiArla/izVAMec45Mj3i\n/I7UeQLxhy0KZerNS0e7/3XE3g==\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
