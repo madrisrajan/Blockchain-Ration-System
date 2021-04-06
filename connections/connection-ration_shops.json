@@ -1,0 +1,45 @@
+{
+    "name": "supply-chain-producer",
+    "version": "1.0.0",
+    "client": {
+        "organization": "ration_shops",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "ration_shops": {
+            "mspid": "RationshopsMSP",
+            "peers": ["peer0.ration_shops.lean.com"],
+            "certificateAuthorities": ["ca.ration_shops.lean.com"]
+        }
+    },
+    "peers": {
+        "peer0.ration_shops.lean.com": {
+            "url": "grpcs://localhost:10051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICeTCCAiCgAwIBAgIRAKqVeJIOKY0pD6rQcXmeXtAwCgYIKoZIzj0EAwIwgYYx\nCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1TYW4g\nRnJhbmNpc2NvMSEwHwYDVQQKDBhyYXRpb25fc2hvcHMuZXhhbXBsZS5jb20xJzAl\nBgNVBAMMHnRsc2NhLnJhdGlvbl9zaG9wcy5leGFtcGxlLmNvbTAeFw0yMTA0MDYy\nMDQyMDBaFw0zMTA0MDQyMDQyMDBaMIGGMQswCQYDVQQGEwJVUzETMBEGA1UECBMK\nQ2FsaWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEhMB8GA1UECgwYcmF0\naW9uX3Nob3BzLmV4YW1wbGUuY29tMScwJQYDVQQDDB50bHNjYS5yYXRpb25fc2hv\ncHMuZXhhbXBsZS5jb20wWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARRnJ5YAWVp\nKsgAmiOCnzzLMCuYVOkC/R4ZccNxpTOxc6LU8qSdYlWbBKjwB7nPrNBfjXOtyBlr\nNQHt+Nuv2keyo20wazAOBgNVHQ8BAf8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUH\nAwIGCCsGAQUFBwMBMA8GA1UdEwEB/wQFMAMBAf8wKQYDVR0OBCIEIJVfZ8GSYa1H\n17b+6YJGfVq8onUUwvQWtBqU2V0wWie1MAoGCCqGSM49BAMCA0cAMEQCIBwBlXbn\njJHoRj+Gk8H3OJ3Dx+BFzPm4dXHtYcuLM0JfAiA0L7eNd5HFS1Rs63wwfpZjymet\nsx2Itz2+xnu3XJi2Cw==\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.ration_shops.lean.com",
+                "hostnameOverride": "peer0.ration_shops.lean.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.ration_shops.lean.com": {
+            "url": "https://localhost:10054",
+            "caName": "ca-ration_shops",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICczCCAhmgAwIBAgIQf42LM/Z3qWF0ej0/GaOOSjAKBggqhkjOPQQDAjCBgzEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xITAfBgNVBAoMGHJhdGlvbl9zaG9wcy5leGFtcGxlLmNvbTEkMCIG\nA1UEAwwbY2EucmF0aW9uX3Nob3BzLmV4YW1wbGUuY29tMB4XDTIxMDQwNjIwNDIw\nMFoXDTMxMDQwNDIwNDIwMFowgYMxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxp\nZm9ybmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMSEwHwYDVQQKDBhyYXRpb25f\nc2hvcHMuZXhhbXBsZS5jb20xJDAiBgNVBAMMG2NhLnJhdGlvbl9zaG9wcy5leGFt\ncGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABDn7arIky+brTleMafJa\nEqjd1GNEFWZh+b4EMTNSTFdz7M++DAuKLQt4ky5paJhi/XW22C+3P3AB1WZDrZ64\n+w6jbTBrMA4GA1UdDwEB/wQEAwIBpjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYB\nBQUHAwEwDwYDVR0TAQH/BAUwAwEB/zApBgNVHQ4EIgQgrdVUr0X1M+7TqPxEg5DR\nkvdNGRtL504PB+xbutwU+mEwCgYIKoZIzj0EAwIDSAAwRQIhAP/xE6r7mqYFCNMr\n67Suf4T7GKgVVRXQsNf7Q6E7+8nPAiB4oFJfdDFm+zZymUQmgr8wGAHZaR0UtQ+F\nzhGmkAUthQ==\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
