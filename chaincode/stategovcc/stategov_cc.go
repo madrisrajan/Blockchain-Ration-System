@@ -9,6 +9,7 @@ import (
 
 	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 	"github.com/hyperledger/fabric-chaincode-go/shim"
+	"bitbucket.org/mediumblockchain/m3/common/util"
 	sc "github.com/hyperledger/fabric-protos-go/peer"
 )
 
@@ -279,6 +280,8 @@ func (cc *Chaincode) transferToDistrict(stub shim.ChaincodeStubInterface, params
 
 		}
 
+		fmt.Print(objectType)
+
 		transfer_item_id := compositeKeyPart[2]
 		transfer_quantity, err := strconv.Atoi(compositeKeyPart[1])
 		if err != nil{
@@ -324,7 +327,7 @@ func (cc *Chaincode) transferToDistrict(stub shim.ChaincodeStubInterface, params
 	}
 
 
-	args := util.ToChaincodeArgs(createNewfoodGrains,new_id, Type, strconv.Itoa(quantity_to_district),"A",new_holder)
+	args := util.ToChaincodeArgs("createNewfoodGrains",new_id, Type, strconv.Itoa(quantity_to_district),"A",new_holder)
 	response := stub.InvokeChaincode("districtofficecc", args, "mainchannel")
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)

@@ -13,7 +13,8 @@
     "fabric-ca-client": "^2.2.5",
     "fabric-client": "^1.4.17",
     "fabric-network": "^2.2.5",
-    "ipfs-http-client": "^49.0.4"
+    "ipfs-http-client": "^49.0.4",
+    "mongoose": "^5.12.3"
   },
   "description": ""
 }

@@ -10,17 +10,17 @@ docker exec -it cli bash ./scripts/channel/join-peer.sh peer0 district_office Di
 docker exec -it cli bash ./scripts/channel/join-peer.sh peer0 ration_shops RationshopsMSP 10051 1.0
 docker exec -it cli bash ./scripts/channel/join-peer.sh peer0 citizens CitizensMSP 11051 1.0
 
-# CC_NAMES="chargesheet_cc citizenprofile_cc evidence_cc fir_cc investigation_cc judgement_cc"
+CC_NAMES="centralgovcc citizencc districtofficecc rationshopcc stategovcc"
 
-# for CC in $CC_NAMES; do
-#     echo "Installing "$CC
-#     docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 citizen CitizenMSP 7051 1.0
-#     docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 police PoliceMSP 8051 1.0
-#     docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 forensics ForensicsMSP 9051 1.0
-#     docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 court CourtMSP 10051 1.0
-#     docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 identityprovider IdentityProviderMSP 11051 1.0
-#     echo "Instantiating "$CC
-#     docker exec -it cli bash ./scripts/install-cc/instantiate.sh $CC
-# done
+for CC in $CC_NAMES; do
+    echo "Installing "$CC
+    docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 central_gov CentralGovernmentMSP 7051 1.0
+    docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 state_gov StateGovernmentMSP 8051 1.0
+    docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 district_office DistrictOfficeMSP 9051 1.0
+    docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 ration_shops RationshopsMSP 10051 1.0
+    docker exec -it cli bash ./scripts/install-cc/install-onpeer-cc.sh $CC peer0 citizens CitizensMSP 11051 1.0
+    echo "Instantiating "$CC
+    docker exec -it cli bash ./scripts/install-cc/instantiate.sh $CC
+done
 
 echo "All Done!"
