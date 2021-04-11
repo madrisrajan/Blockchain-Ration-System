@@ -280,6 +280,8 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 
 		}
 
+		fmt.Print(objectType)
+
 		transfer_item_id := compositeKeyPart[2]
 		transfer_quantity, err := strconv.Atoi(compositeKeyPart[1])
 		if err != nil{
