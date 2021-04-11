@@ -9,7 +9,6 @@ import (
 
 	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 	"github.com/hyperledger/fabric-chaincode-go/shim"
-	"bitbucket.org/mediumblockchain/m3/common/util"
 	sc "github.com/hyperledger/fabric-protos-go/peer"
 )
 
@@ -188,7 +187,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	value := []byte{0x00}
 	compositekeyerr := stub.PutState(typequantityidkey, value)
 	if compositekeyerr != nil{
-		return shim.Error{compositekeyerr.Error()}
+		return shim.Error(compositekeyerr.Error())
 	}
 
 
