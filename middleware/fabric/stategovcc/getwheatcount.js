@@ -19,7 +19,7 @@ WheatCount = async (user, Type) => {
     const network = await gateway.getNetwork("mainchannel");
 
     // Get the contract from the network.
-    const contract = network.getContract("centralgovcc");
+    const contract = network.getContract("stategovcc");
 
     // Evaluate the specified transaction.
     const result = await contract.evaluateTransaction("getWheatCount", Type);

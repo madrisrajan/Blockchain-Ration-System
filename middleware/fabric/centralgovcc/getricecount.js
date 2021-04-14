@@ -19,7 +19,7 @@ RiceCount = async (user, Type) => {
     const network = await gateway.getNetwork("mainchannel");
 
     // Get the contract from the network.
-    const contract = network.getContract("centralgov_cc");
+    const contract = network.getContract("centralgovcc");
 
     // Evaluate the specified transaction.
     const result = await contract.evaluateTransaction("getRiceCount", Type);
