@@ -1,6 +1,20 @@
-import React from 'react'
+import React,{Component} from 'react'
 import {TextField, Button, FormControl, Select, MenuItem} from '@material-ui/core'
-const Register = () => {
+class App extends Component {
+  state : {
+    profile : {
+    name : "",
+    age : "",
+    dob : "",
+    gender : "",
+    address : "",
+    rationcardnumber : "",
+    redirect : null,
+  },
+    message : "",
+  }
+
+render() {
     return(
         <div>
              <h2>Register a new Citizen</h2>
@@ -9,23 +23,57 @@ const Register = () => {
             <TextField
               label='Name'
               variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  name : event.target.value,
+                },
+
+              }) }
             />
             <br />
             <br />
             <TextField
               label='Age'
               variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  age : event.target.value,
+                },
+
+              }) }
+              
+              
             /> 
             <br />
             <br />
             <TextField
               label='DOB'
               variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  dob : event.target.value,
+                },
+
+              }) }
             />
             <br />
             <br />
             <FormControl>
-              <Select>
+              <Select onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  gender : event.target.value,
+                },
+
+              }) }
+              >
                 <MenuItem value={'male'}>Male</MenuItem>
                 <MenuItem value={'female'}>Female</MenuItem>
               </Select>
@@ -35,6 +83,14 @@ const Register = () => {
             <TextField
               label='Address'
               variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  address : event.target.value,
+                },
+
+              }) }
             />
             
             <br />
@@ -42,6 +98,14 @@ const Register = () => {
             <TextField
               label='Ration Card Number'
               variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  rationcardnumber : event.target.value,
+                },
+
+              }) }
             />
             <br />
             <br />
@@ -53,5 +117,7 @@ const Register = () => {
         </div>
     )
 }
+}
 
-export default Register
+
+export default App
