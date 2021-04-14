@@ -9,7 +9,7 @@ router.post("/api/main/centralgov/inputgrains", async (req, res) => {
 
     try {
         foodgraindata = JSON.parse(req.body.payload);
-        foodgraindata.ID = md5(JSON.stringify(ChargeSheetData) + new Date().toString());
+        foodgraindata.ID = md5(JSON.stringify(foodgraindata) + new Date().toString());
         await CentralGovernment.InputFoodGrains(req.user, foodgraindata);
         res.status(200).send({
             message: "ChargeSheet has been successfully added!",
@@ -34,7 +34,7 @@ router.get("/api/main/centralgov/ricecount",async (req, res) => {
     }
 });
 
-router.get("/api/main/centralgov/ricecount",async (req, res) => {
+router.get("/api/main/centralgov/wheatcount",async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const Type = req.params.Type;

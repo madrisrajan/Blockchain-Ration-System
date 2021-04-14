@@ -1,9 +1,7 @@
-const InputFoodGrains = require("./inputfoodgrains");
 const GetRiceCount = require("./getricecount");
-const GetWheatCount = require("./getwheatcount");
+const GetWheatCount = require("./getwheatcount.js");
 
 const payload = {
-    InputFoodGrains,
     GetRiceCount,
     GetWheatCount,
 };

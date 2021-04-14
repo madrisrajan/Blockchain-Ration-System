@@ -20,7 +20,7 @@ AddGrains = async (user, payload) => {
     const network = await gateway.getNetwork("mainchannel");
 
     //Get the contract from the network.
-    const contract = network.getContract("centralgov_cc");
+    const contract = network.getContract("centralgovcc");
 
     //Evaluate the specified transaction.
     await contract.submitTransaction("createNewfoodGrains",payload.ID,payload.Type,payload.Quantity,payload.Quality,payload.Holder);
