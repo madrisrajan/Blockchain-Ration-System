@@ -13,6 +13,12 @@ const HomeCentral = () => {
         <Button variant='contained' color='primary'>Distribute Food Grains</Button></Link>
         <br />
         <br />
+         <Button variant='contained' color='primary' >Get Rice Count</Button>
+        <br />
+        <br />
+         <Button variant='contained' color='primary' >Get Wheat Count</Button>
+        <br />
+        <br />
         <Button variant='contained' color='primary' >View Citizen Profile</Button>
         <br />
         <br />

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Button} from '@material-ui/core'
 import {Route,Link} from 'react-router-dom'
 
-const HomeState = () => {
+const HomeState= () =>{
     return (
         <div>
               <h1>State Government Home Page</h1>
