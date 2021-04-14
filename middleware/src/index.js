@@ -9,11 +9,11 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type");
-    next();
+    next();// Unhandled 'error' event
 });
 
 app.use(require("./routes/auth"));
 app.use(require("./routes/centralgovcc"));
 
 
-app.listen(3000, console.log);
+app.listen(3000, console.log("started"));
