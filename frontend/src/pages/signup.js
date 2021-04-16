@@ -106,7 +106,7 @@ render() {
                color='primary'
                onClick={this.signup}
                >
-                Login
+                SignUp
             </Button>   
             
         </div>
