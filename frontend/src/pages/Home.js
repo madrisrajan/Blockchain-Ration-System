@@ -14,7 +14,8 @@ const Home = () => {
         
         <br />
         <br />
-
+        <br />
+<br />
         <Link to='/register'>
             <Button variant='contained' color='primary'>Register
             </Button>
