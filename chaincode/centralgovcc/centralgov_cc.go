@@ -219,6 +219,8 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []st
 
 func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 
+	fmt.Printf("- entered the c")
+
 	// check Access for central government
 	creatorOrg, creatorCertIssuer, err := getTxCreatorInfo(stub)
 	if !authenticateCentralgov(creatorOrg, creatorCertIssuer) {
@@ -241,6 +243,10 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 	new_holder := strings.ToLower(params[2])
 	new_id := params[3]
 
+	finaltransfer := quantity_to_state
+
+	fmt.Printf("- dena hai %d", quantity_to_state)
+
 	RiceidxIterator, err := stub.GetStateByPartialCompositeKey("Type~Quantity~id", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
@@ -249,6 +255,9 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 
 	defer RiceidxIterator.Close()
 
+	fmt.Printf("- beti")
+	fmt.Printf("- quan to st\n")
+	fmt.Printf("- kitna de rahe: %d\n", quantity_to_state)
 	for quantity_to_state > 0 {
 
 		responseRange, err := RiceidxIterator.Next()
@@ -261,10 +270,15 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 			return shim.Error(err.Error())
 		}
 
-		fmt.Print(objectType)
+		fmt.Printf(objectType)
+		fmt.Printf("- Composite keys\n")
+		fmt.Printf("- part1: %s  part2:%s  part3:%s\n", compositeKeyPart[0], compositeKeyPart[1], compositeKeyPart[2])
 
 		transfer_item_id := compositeKeyPart[2]
 		transfer_quantity, err := strconv.Atoi(compositeKeyPart[1])
+
+		fmt.Printf("- transfer quantity in loop\n")
+		fmt.Printf("- %d\n", transfer_quantity)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
@@ -304,7 +318,7 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 
 	}
 
-	args := util.ToChaincodeArgs("createNewfoodGrains", new_id, Type, strconv.Itoa(quantity_to_state), "A", new_holder)
+	args := util.ToChaincodeArgs("createNewfoodGrains", new_id, Type, strconv.Itoa(finaltransfer), "A", new_holder)
 	response := stub.InvokeChaincode("stategovcc", args, "mainchannel")
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)
