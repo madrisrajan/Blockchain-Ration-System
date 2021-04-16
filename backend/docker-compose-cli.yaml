@@ -182,7 +182,7 @@ services:
             - FABRIC_LOGGING_SPEC=INFO
             - CORE_PEER_ID=cli
             - CORE_PEER_ADDRESS=peer0.central_gov.example.com:7051
-            - CORE_PEER_LOCALMSPID=CitizenMSP
+            - CORE_PEER_LOCALMSPID=CentralGovernmentMSP
             - CORE_PEER_TLS_ENABLED=true
             - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls/server.crt
             - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/central_gov.example.com/peers/peer0.central_gov.example.com/tls/server.key

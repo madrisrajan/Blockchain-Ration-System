@@ -7,3 +7,9 @@ chaincode/citizencc/vendor/
 chaincode/districtofficecc/vendor/
 chaincode/rationshopcc/vendor/
 chaincode/stategovcc/vendor/
+middleware/wallet_centralgov/
+middleware/wallet_stategov/
+middleware/wallet_districtoffice/
+middleware/wallet_citizens/
+middleware/wallet_rationshop/
+

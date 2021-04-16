@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Button, FormControl, TextField, Select, MenuItem} from '@material-ui/core'
+import {Redirect} from 'react-router-dom'
 
 class App extends Component {
     state : {
@@ -10,6 +11,11 @@ class App extends Component {
 
     }
 
+async componentDidMount()  {
+        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!='state_gov') this.setState({ redirect: <Redirect to="/login" /> });
+        console.log(localStorage.getItem("session"));
+        
+    }
     // distributeToDistrict = async () => {
     //     const requestOptions = {
     //     method : "POST",
@@ -34,6 +40,9 @@ class App extends Component {
         
     // }
     render() {
+         if(this.state && this.state.redirect){
+            return this.state.redirect
+        }
     return ( 
         <div>
             <h1>

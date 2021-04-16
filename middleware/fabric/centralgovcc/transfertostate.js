@@ -1,7 +1,7 @@
 const { FileSystemWallet, Gateway } = require("fabric-network");
 const path = require("path");
 
-AddGrains = async (user, payload) => {
+TransferToState = async (user, payload) => {
 
     const ccp = require(`../ccp/connection-central_gov.json`);
     const walletPath = path.join(process.cwd(),`wallet_centralgov`);
@@ -23,8 +23,8 @@ AddGrains = async (user, payload) => {
     const contract = network.getContract("centralgovcc");
 
     //Evaluate the specified transaction.
-    await contract.submitTransaction("createNewfoodGrains",payload.ID,payload.Type,payload.Quantity,payload.Quality,payload.Holder);
+    await contract.submitTransaction("transferTOState",payload.Quantity,payload.Type,payload.Holder,payload.ID);
 
 };
 
-module.exports = AddGrains;
+module.exports = TransferToState;

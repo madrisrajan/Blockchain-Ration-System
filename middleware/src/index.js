@@ -14,6 +14,10 @@ app.use(function (req, res, next) {
 
 app.use(require("./routes/auth"));
 app.use(require("./routes/centralgovcc"));
+app.use(require("./routes/districtofficecc"));
+app.use(require("./routes/rationshopcc"));
+app.use(require("./routes/stategovcc"));
+
 
 
 app.listen(3000, console.log("started"));
