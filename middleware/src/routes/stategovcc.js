@@ -24,10 +24,10 @@ const router = new express.Router();
 router.get("/api/main/stategov/ricecount",async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    const Type = req.params.Type;
+    const Type = 'rice';
     try {
-        let data = await StateGovernment.GetRiceCount(req.user, Type);
-        res.status(200).send(data);
+        let data = await StateGovernment.GetRiceCount('state_gov', Type);
+        res.status(200).send(data.toString());
     } catch (error) {
         console.log(error);
         res.status(404).send({ message: "Something went wrong" });

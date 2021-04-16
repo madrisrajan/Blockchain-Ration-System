@@ -5,7 +5,7 @@ const ccp = require("../ccp/connection-ration_shops.json");
 
 RegisterUser = async (user) => {
     // Create a new file system based wallet for managing identities.
-    const walletPath = path.join(process.cwd(), "wallet_rationshops");
+    const walletPath = path.join(process.cwd(), "wallet_rationshop");
     const wallet = new FileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
 
