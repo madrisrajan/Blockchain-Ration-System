@@ -3,7 +3,7 @@ const sha256 = require('sha256');
 const User = require('../models/user');
 const router = new express.Router();
 
-router.post('api/auth/login', (req,res) => {
+router.post('/api/auth/login', (req,res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const username = req.body.username;
@@ -14,7 +14,7 @@ router.post('api/auth/login', (req,res) => {
         User.findOne({username}, (err, doc) => {
         if(err || doc == null) return res.sendStatus(404);
         if (doc.passhash === passhash) {
-
+console.log(group)
             // let userdata = {
             //     username,
             //     passhash,
@@ -22,6 +22,8 @@ router.post('api/auth/login', (req,res) => {
             // };
 
             res.status(200).send({
+                usergrp: doc.group,
+                loginsuc: 1,
                 message : 'Login Successful',
             });
         }else{
@@ -39,7 +41,7 @@ router.post('api/auth/login', (req,res) => {
 }
 });
 
-router.post('api/auth/register', async (req,res) => {
+router.post('/api/auth/signup', async (req,res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const username = req.body.username;

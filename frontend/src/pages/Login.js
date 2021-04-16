@@ -8,7 +8,7 @@ class App extends Component {
         group : "",
         username : "",
         password : "",
-        redirect : null
+        redirect :null,
     }
 
     
@@ -28,13 +28,20 @@ login = async () => {
     let response =await fetch("http://127.0.0.1:3000/api/auth/login",requestOptions)
     let res = await response.json()
     console.log(res)
-    if(res.status === 200){
-    localStorage.setItem('user', this.state.username)
-    if(this.state.group === 'citizen') this.setState ({ redirect : <Redirect to='/homecitizen' />})
-    else if(this.state.group === 'centralgov') this.setState ({ redirect : <Redirect to='/homecentral' />})
-    else if(this.state.group === 'stategov') this.setState ({ redirect : <Redirect to='/homestate' />})
-    else if(this.state.group === 'districtoff') this.setState ({ redirect : <Redirect to='/homedistrict' />})
-    else if(this.state.group === 'rationshop') this.setState ({ redirect : <Redirect to='/homeration' />})
+    
+    if(res.loginsuc === 1){
+    localStorage.setItem('username', this.state.username)
+    localStorage.setItem('usergrp', this.state.group)
+    localStorage.setItem('session', "ok")
+    
+    if(this.state.group === 'citizens') this.setState ({ redirect : <Redirect to='/homecitizen' />})
+    else if(this.state.group === 'central_gov') this.setState ({ redirect : <Redirect to='/homecentral' />})
+    else if(this.state.group === 'state_gov')   this.setState ({ redirect : <Redirect to='/homestate' />})
+    else if(this.state.group === 'district_office') this.setState ({ redirect : <Redirect to='/homedistrict' />})
+    else if(this.state.group === 'ration_shops') this.setState ({ redirect : <Redirect to='/homeration' />})
+    else;
+    console.log(this.state.redirect)
+    
     }else{
         this.setState ({redirect : 'wrong credential'})
         
@@ -44,22 +51,29 @@ login = async () => {
 }
     
 render() {
+    if(this.state!=null && this.state.redirect!=null) {
+        return this.state.redirect
+    }
+
+    
     return (
         <div>
            <h2>Login</h2>
             <FormControl
-            
-                  onChange={(event) => {
+                
+                  
+            >
+                <Select 
+                // value = {this.state.group}
+                onChange={(event) => {
                       this.setState({ group : event.target.value })
 
-                  }}
-            >
-                <Select>
-                    <MenuItem value={'centralgov'}>Central Goverment</MenuItem>
-                    <MenuItem value={'stategov'}>State Goverment</MenuItem>
-                    <MenuItem value={'districtoff'}>District Office</MenuItem>
-                    <MenuItem value={'rationshop'}>Ration Shop</MenuItem>
-                    <MenuItem value={'citizen'}>Citizen</MenuItem>
+                  }}>
+                    <MenuItem value={'central_gov'}>Central Goverment</MenuItem>
+                    <MenuItem value={'state_gov'}>State Goverment</MenuItem>
+                    <MenuItem value={'district_office'}>District Office</MenuItem>
+                    <MenuItem value={'ration_shops'}>Ration Shop</MenuItem>
+                    <MenuItem value={'citizens'}>Citizen</MenuItem>
                 </Select>
                 <FormHelperText>Please choose the domain you belong to</FormHelperText>
             </FormControl>
@@ -69,6 +83,7 @@ render() {
               label='Username'
               
               variant='outlined'
+            //   value = {this.state.username}
               onChange={(event) =>
                 this.setState ({ 
                     username : event.target.value, 
@@ -96,11 +111,14 @@ render() {
                onClick={this.login}
                >
                 Login
-            </Button>   
+            </Button>
             
         </div>
     )
 }
+
+
+
 }
 
 export default App

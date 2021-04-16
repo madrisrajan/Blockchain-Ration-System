@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Button, FormControl, TextField, Select, MenuItem} from '@material-ui/core'
+import {Redirect} from 'react-router-dom'
 
 class App extends Component {
     state : {
@@ -8,6 +9,12 @@ class App extends Component {
         quality : "",
         holder : "Ration shop",
 
+    }
+
+    async componentDidMount()  {
+        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!='district_office') this.setState({ redirect: <Redirect to="/login" /> });
+        console.log(localStorage.getItem("session"));
+        
     }
 
     // distributeToRation = async () => {
@@ -28,12 +35,15 @@ class App extends Component {
     // let response = await fetch("http://127.0.0.1:3000/api/main/districtoff/distribute",requestOptions)
     //     let res = await response.json();
     //     console.log(res);
-    //     if(res/status === 200){
+    //     if(res.status === 200){
     //     this.setState({ message: 'Grains added successfully' });
     //     }
         
     // }
     render() {
+         if(this.state && this.state.redirect){
+            return this.state.redirect
+        }
     return ( 
         <div>
             <h1>

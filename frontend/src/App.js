@@ -3,9 +3,11 @@ import './App.css';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText } from "@material-ui/core";
 import {Route, Link, BrowserRouter as Router} from 'react-router-dom'
 
+import Trial from './pages/trial'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import SignUp from './pages/signup'
 import HomeCentral from './pages/HomeCentral'
 import HomeState from './pages/HomeState'
 import HomeDistrict from './pages/HomeDistrict'
@@ -26,9 +28,11 @@ function App() {
     <div className="App">
         <h1>Public Distribution System</h1>
        
+       <Route path='/trial' component={Trial}></Route>
        <Route path='/register' component={Register}></Route>
        <Route path='/home' component= {Home }></Route>
         <Route path='/login' component={ Login}></Route>
+        <Route path='/signup' component={SignUp}></Route>
        <Route path='/homecentral' component={ HomeCentral}></Route>
        <Route path='/homestate' component={ HomeState}></Route>
        <Route path='/homedistrict' component={ HomeDistrict}></Route>

@@ -1,7 +1,20 @@
 import React, {Component} from 'react'
 import {Button} from '@material-ui/core'
-import {Route, Link} from 'react-router-dom'
-const HomeDistrict = () => {
+import {Route, Link, Redirect} from 'react-router-dom'
+class App extends Component {
+    state = {
+        redirect : null,
+    }
+
+    async componentDidMount()  {
+        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!= 'district_office') this.setState({ redirect: <Redirect to="/login" /> });
+        console.log(localStorage.getItem("session"));
+        
+    }
+render() {
+    if(this.state && this.state.redirect){
+            return this.state.redirect
+        }
     return( 
         <div>
           <h1>District Office Home Page</h1>
@@ -29,5 +42,6 @@ const HomeDistrict = () => {
         </div>
     )
     };
+}
 
-    export default HomeDistrict
+    export default App
