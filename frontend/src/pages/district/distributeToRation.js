@@ -47,7 +47,7 @@ class App extends Component {
 
     }
 
-    let response = await fetch("http://127.0.0.1:3000/api/main/districtoff/distribute",requestOptions)
+    let response = await fetch("http://127.0.0.1:3000/api/main/district/distribute",requestOptions)
         let res = await response.json();
         console.log(res);
         if(res.succode === '1'){
@@ -81,12 +81,7 @@ class App extends Component {
             </FormControl>
             <br />
             <br/>
-            <TextField
-              label='Quantity'
-              variant='outlined'
-              required
-              >
-            </TextField>
+            
             < br/>
             < br />
 
@@ -94,6 +89,7 @@ class App extends Component {
               
               variant='outlined'
               value={"rice: "+(this.state && this.state.ricecount)}
+              disabled
               >
             </TextField>
             < br />
@@ -102,10 +98,25 @@ class App extends Component {
               
               variant='outlined'
               value={"wheat: "+(this.state && this.state.wheatcount)}
+              disabled
               >
             </TextField>
             < br />
             < br />
+            <TextField
+              label='Quantity'
+              variant='outlined'
+
+              onChange={(event) => {
+                  this.setState({
+                      Quantity : event.target.value
+                  })
+              }}
+              >
+             
+            </TextField>
+             <br />
+              <br />
 
             <TextField
               label='Holder'
