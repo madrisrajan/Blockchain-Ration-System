@@ -2,8 +2,8 @@ const { FileSystemWallet, Gateway } = require("fabric-network");
 const path = require("path");
 
 RiceCount = async (user, Type) => {
-    const ccp = require(`../ccp/connection-${user.group}.json`);
-    const walletPath = path.join(process.cwd(), `wallet_${user.group}`);
+    const ccp = require(`../ccp/connection-district_office.json`);
+    const walletPath = path.join(process.cwd(), `wallet_districtoffice`);
     const wallet = new FileSystemWallet(walletPath);
     console.log(`Wallet path: ${walletPath}`);
 
@@ -11,7 +11,7 @@ RiceCount = async (user, Type) => {
     const gateway = new Gateway();
     await gateway.connect(ccp, {
         wallet,
-        identity: user.username,
+        identity: 'admin',
         discovery: { enabled: true, asLocalhost: true },
     });
 

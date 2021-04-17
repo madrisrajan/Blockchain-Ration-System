@@ -12,6 +12,39 @@ class App extends Component {
         console.log(localStorage.getItem("session"));
         
     }
+
+
+    getricecount = async () => {
+
+         const requestOptions = {
+        method : "GET",
+        headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" }
+
+    }
+
+    let response = await fetch("http://localhost:3000/api/main/stategov/ricecount",requestOptions) 
+    let res = await response.json()
+    console.log(res)
+    this.setState ({redirect : res})
+
+    }
+
+    wheatCount = async () => {
+
+        const requestOptions = {
+        method : "GET",
+        headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" }
+
+    }
+
+    let response = await fetch("http://localhost:3000/api/main/stategov/wheatcount",requestOptions) 
+    let res = await response.json()
+    console.log(res)
+    this.setState ({redirect : res})
+
+    }
+
+
 render() {
     if(this.state && this.state.redirect){
             return this.state.redirect
@@ -26,6 +59,16 @@ render() {
           Distribute To District Offices
           </Button>
           </Link>
+          <br />
+          <br />
+          <Button variant='contained' color='primary' onClick={this.getricecount}>
+          Get Rice count
+          </Button>
+          <br />
+          <br />
+          <Button variant='contained' color='primary' onClick={this.wheatCount}>
+          Get Wheat count
+          </Button>
           <br />
           <br />
 
