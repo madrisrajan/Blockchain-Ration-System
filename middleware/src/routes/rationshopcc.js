@@ -11,7 +11,7 @@ router.post("/api/main/ration/inputgrains", async (req, res) => {
         foodgraindata = JSON.parse(req.body.payload);
         foodgraindata.Holder = 'Citizen'
         foodgraindata.ID = md5(JSON.stringify(foodgraindata) + new Date().toString());
-        await CentralGovernment.InputFoodGrains(req.user, foodgraindata);
+        await RationShop.InputFoodGrains(req.user, foodgraindata);
         res.status(200).send({
             message: "Grains has been successfully transferred!",
             id: ChargeSheetData.ID,
@@ -28,7 +28,7 @@ router.get("/api/main/ration/ricecount",async (req, res) => {
 
     const Type = 'rice';
     try {
-        let data = await CentralGovernment.GetRiceCount('rationshops', Type);
+        let data = await RationShop.GetRiceCount('rationshops', Type);
         res.status(200).send(data.toString());
     } catch (error) {
         console.log(error);
@@ -41,7 +41,7 @@ router.get("/api/main/ration/wheatcount",async (req, res) => {
 
     const Type = 'wheat';
     try {
-        let data = await CentralGovernment.GetWheatCount('rationshops', Type);
+        let data = await RationShop.GetWheatCount('rationshops', Type);
         res.status(200).send(data.toString());
     } catch (error) {
         console.log(error);

@@ -20,12 +20,12 @@ class App extends Component {
         headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" },
         }
 
-         let response2 = await fetch("http://127.0.0.1:3000/api/main/stategov/ricecount",requestOptions)
+         let response2 = await fetch("http://127.0.0.1:3000/api/main/ration/ricecount",requestOptions)
         let res2 = await response2.json();
         console.log(res2);
         this.setState({ricecount : res2}) ;
 
-        let response1 = await fetch("http://127.0.0.1:3000/api/main/stategov/wheatcount",requestOptions)
+        let response1 = await fetch("http://127.0.0.1:3000/api/main/ration/wheatcount",requestOptions)
         let res1 = await response1.json();
         console.log(res1);
         this.setState({wheatcount : res1}) ;
@@ -47,7 +47,7 @@ class App extends Component {
 
     }
 
-    let response = await fetch("http://127.0.0.1:3000/api/main/rationshop/distribute",requestOptions)
+    let response = await fetch("http://127.0.0.1:3000/api/main/ration/inputgrains",requestOptions)
         let res = await response.json();
         console.log(res);
         if(res.succode === '1'){

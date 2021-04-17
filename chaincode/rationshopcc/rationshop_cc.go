@@ -215,7 +215,9 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []st
 
 }
 
-// Function to transfer items to district
+
+
+// Function to transfer items to citizens
 
 func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 
@@ -225,16 +227,16 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 		return shim.Error("{\"Error\":\"Access Denied!\",\"Payload\":{\"MSP\":\"" + creatorOrg + "\",\"CA\":\"" + creatorCertIssuer + "\"}}")
 	}
 
-	// Check if sufficient Params passed
-	if len(params) != 4 {
-		return shim.Error("Incorrect number of arguments. Expecting 4")
-	}
-	// Check if Params are non-empty
-	for a := 0; a < 4; a++ {
-		if len(params[a]) <= 0 {
-			return shim.Error("Argument must be a non-empty string")
-		}
-	}
+// Check if sufficient Params passed
+    if len(params) != 5 {
+       return shim.Error("Incorrect number of arguments. Expecting 4")
+}
+// Check if Params are non-empty
+    for a := 0; a < 5; a++ {
+        if len(params[a]) <= 0 {
+	        return shim.Error("Argument must be a non-empty string")
+   }
+}
 
 	quantity_to_citizen, err := strconv.Atoi(params[0])
 	if err != nil {
@@ -243,8 +245,8 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 	Type := strings.ToLower(params[1])
 	new_holder := strings.ToLower(params[2])
 	new_id := params[3]
-
-	totransfer := quantity_to_citizen
+	ration_card_no := params[4]
+	final_transfer:= quantity_to_citizen
 
 	ItemIdxIterator, err := stub.GetStateByPartialCompositeKey("Type-Quantity-id", []string{Type})
 
@@ -330,9 +332,9 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 	
 
 
-	}
+}
 
-	args := util.ToChaincodeArgs("createNewfoodGrain", new_id, Type, strconv.Itoa(totransfer), "A", new_holder)
+	args := util.ToChaincodeArgs("createNewfoodGrain", new_id, Type,strconv.Itoa(final_transfer),"A",new_holder,ration_card_no)
 	response := stub.InvokeChaincode("citizencc", args, "mainchannel")
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)

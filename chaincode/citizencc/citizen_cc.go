@@ -16,11 +16,12 @@ type Chaincode struct{
 }
 
 type Foodgrain struct{
-	ID       string `json:"ID"`
-	TYPE     string `json:"TYPE"`
-	Quantity string `json:"Quantity"`
-	Quality  string `json:"Quality"`
-	Holder   string `json:"Holder"`
+	ID                string `json:"ID"`
+	TYPE              string `json:"TYPE"`
+	Quantity          string `json:"Quantity"`
+	Quality           string `json:"Quality"`
+	Holder            string `json:"Holder"`
+	Rationcard_number string `json:"Rationcard_number"`
 }
 
 type citizen struct {
@@ -73,7 +74,7 @@ func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params [
 
 	// Check if sufficient params are passed.
 	if len(params) != 8 {
-		return shim.Error("Incorrect number of arguments. Expecting 5")
+		return shim.Error("Incorrect number of arguments. Expecting 8")
 	}
 
 	// Check if params are non-empty.
@@ -137,12 +138,12 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 	// Check if sufficient params are passed.
-	if len(params) != 5 {
+	if len(params) !=  6{
 		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
 
 	// Check if params are non-empty.
-	for a:=0; a<5; a++ {
+	for a:=0; a<6; a++ {
 		if len(params[a]) <= 0 {
 			return shim.Error("Argument must be a non-empty string")
 		}
@@ -154,6 +155,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	Quantity := params[2]
 	Quality := strings.ToLower(params[3])
 	Holder := strings.ToLower(params[4])
+	Ration_no := params[5]
 
 	// Check if Foodgrains exist with Key => ID.
 	foodgrainsAsBytes, err := stub.GetState(ID)
@@ -164,7 +166,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 	// Generate foodgrains from the information provided.
-	foodGrain := &Foodgrain{ID,TYPE,Quantity,Quality,Holder}
+	foodGrain := &Foodgrain{ID,TYPE,Quantity,Quality,Holder,Ration_no}
 
 	foodGrainJSONasBytes, err := json.Marshal(foodGrain)
 	if err != nil {
@@ -178,7 +180,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 
-	indexName := "citType-citQuantity-citid"
+	indexName := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
 	typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodGrain.TYPE, foodGrain.Quantity, foodGrain.ID})
 	if err != nil{
 		return shim.Error(err.Error())
@@ -202,7 +204,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 //function to get Quantity of Rice
 func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []string) sc.Response{
 
-	if len(params)!=1{
+	if len(params)!=2{
 		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
@@ -211,10 +213,12 @@ func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []str
 	}
 
 	Type := strings.ToLower(params[0])
+	Ration_no:=params[1]
 	var total int
     total = 0
 	
-	RiceResultIterator, err := stub.GetStateByPartialCompositeKey("citType-citQuantity-citid", []string{Type})
+	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
+	RiceResultIterator, err := stub.GetStateByPartialCompositeKey(compositeString, []string{Type})
 	
 	if err != nil{
 		return shim.Error(err.Error());
@@ -258,7 +262,7 @@ func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []str
 //function to get Quantity of wheat
 func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface ,params []string) sc.Response{
 
-	if len(params)!=1{
+	if len(params)!=2{
 		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
@@ -269,8 +273,10 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface ,params []st
 	Type := strings.ToLower(params[0])
 	var total int
     total = 0
+	Ration_no :=params[1]
 	
-	WheatResultIterator, err := stub.GetStateByPartialCompositeKey("citType-citQuantity-citid", []string{Type})
+	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
+	WheatResultIterator, err := stub.GetStateByPartialCompositeKey(compositeString, []string{Type})
 	
 	if err != nil{
 		return shim.Error(err.Error());
