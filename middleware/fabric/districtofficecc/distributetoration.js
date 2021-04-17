@@ -22,9 +22,9 @@ TransferToRation = async (user, payload) => {
     const contract = network.getContract("districtofficecc");
 
     // Evaluate the specified transaction.
-    const result = await contract.evaluateTransaction("transferToShop", payload.Quantity,payload.Type,payload.Holder,payload.ID);
+    await contract.submitTransaction("transferToShop", payload.Quantity,payload.Type,payload.Holder,payload.ID);
 
-    return JSON.parse(result.toString());
+    
 };
 
 module.exports = TransferToRation;

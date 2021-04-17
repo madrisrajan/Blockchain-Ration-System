@@ -8,6 +8,7 @@ class App extends Component {
     dob : "",
     gender : "",
     address : "",
+    mobilenumber: "",
     rationcardnumber : "",
     redirect : null,
   },
@@ -96,6 +97,20 @@ render() {
             <br />
             <br />
             <TextField
+              label='Mobile Number'
+              variant='outlined'
+              onChange={(event) =>
+                
+              this.setState({ 
+                profile : {
+                  mobilenumber : event.target.value,
+                },
+
+              }) }
+            />
+            <br />
+            <br />
+                  <TextField
               label='Ration Card Number'
               variant='outlined'
               onChange={(event) =>

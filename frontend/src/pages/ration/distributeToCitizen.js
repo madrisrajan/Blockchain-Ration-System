@@ -87,13 +87,13 @@ class App extends Component {
               
               variant='outlined'
               value={"rice: "+(this.state && this.state.ricecount)}
-              
+              disabled
               >
             </TextField>            
             < br />
             < br />
              <TextField
-              
+              disabled
               variant='outlined'
               value={"wheat: "+(this.state && this.state.wheatcount)}
               
@@ -103,6 +103,14 @@ class App extends Component {
             < br />
              <TextField
               label='Quantity'
+              variant='outlined'
+              required
+              >
+            </TextField>
+<br />
+<br />
+             <TextField
+              label='Citizen Ration card Number'
               variant='outlined'
               required
               >
