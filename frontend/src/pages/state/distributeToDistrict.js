@@ -4,41 +4,58 @@ import {Redirect} from 'react-router-dom'
 
 class App extends Component {
     state : {
-        type : "",
-        quantity : "",
-        quality : "",
-        holder : "District Office",
+        Type : "",
+        Quantity : "",
+        ricecount : "",
+        wheatcount : "",
 
     }
 
 async componentDidMount()  {
         if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!='state_gov') this.setState({ redirect: <Redirect to="/login" /> });
         console.log(localStorage.getItem("session"));
+
+
+         const requestOptions = {
+        method : "GET",
+        headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" },
+        }
+
+         let response2 = await fetch("http://127.0.0.1:3000/api/main/stategov/ricecount",requestOptions)
+        let res2 = await response2.json();
+        console.log(res2);
+        this.setState({ricecount : res2}) ;
+
+        let response1 = await fetch("http://127.0.0.1:3000/api/main/stategov/wheatcount",requestOptions)
+        let res1 = await response1.json();
+        console.log(res1);
+        this.setState({wheatcount : res1}) ;
         
     }
-    // distributeToDistrict = async () => {
-    //     const requestOptions = {
-    //     method : "POST",
-    //     headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" },
-    //     body : JSON.stringify({
-    //         payload: JSON.stringify({
-    //           type : this.state.type,
-    //           quantity : this.state.quantity,
-    //           quality : this.state.quality,
-    //           holder : this.state.holder,
-    //     })
-    //     })
 
-    // }
 
-    // let response = await fetch("http://127.0.0.1:3000/api/main/stategov/distribute",requestOptions)
-    //     let res = await response.json();
-    //     console.log(res);
-    //     if(res/status === 200){
-    //     this.setState({ message: 'Grains added successfully' });
-    //     }
+    distributeToDistrict = async () => {
+        const requestOptions = {
+        method : "POST",
+        headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" },
+        body : JSON.stringify({
+            payload: JSON.stringify({
+              Type : this.state.Type,
+              Quantity : this.state.Quantity,
+              
+        })
+        })
+
+    }
+
+    let response = await fetch("http://127.0.0.1:3000/api/main/stategov/distribute",requestOptions)
+        let res = await response.json();
+        console.log(res);
+        if(res.succode === '1'){
+        this.setState({ message: 'Grains distributed successfully from state' });
+        }
         
-    // }
+    }
     render() {
          if(this.state && this.state.redirect){
             return this.state.redirect
@@ -53,7 +70,11 @@ async componentDidMount()  {
             </h2>
 
             <FormControl>
-                <Select value='rice'>
+                <Select onChange={(event) => {
+                  this.setState({
+                      Type : event.target.value
+                  })
+              }}>
                     <MenuItem value={'wheat'}>Wheat</MenuItem>
                     <MenuItem value={'rice'}>Rice</MenuItem>
 
@@ -61,22 +82,36 @@ async componentDidMount()  {
             </FormControl>
             <br />
             <br/>
+            
+
+            <TextField
+              value={"rice: "+(this.state && this.state.ricecount)}
+              variant='outlined'
+              disabled
+              >
+            </TextField>
+            < br />
+            < br />
+            <TextField
+              value={"wheat: "+(this.state && this.state.wheatcount)}
+              variant='outlined'
+              disabled
+              >
+            </TextField>
+            < br />
+            < br />
             <TextField
               label='Quantity'
               variant='outlined'
-              required
+              onChange={(event) => {
+                  this.setState({
+                      Quantity : event.target.value
+                  })
+              }}
+              
               >
             </TextField>
             < br/>
-            < br />
-
-            <TextField
-              label='Quality'
-              variant='outlined'
-              required
-              >
-            </TextField>
-            < br />
             < br />
 
             <TextField

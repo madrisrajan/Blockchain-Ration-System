@@ -1,7 +1,7 @@
 const { FileSystemWallet, Gateway } = require("fabric-network");
 const path = require("path");
 
-WheatCount = async (user, Type) => {
+DistributeToCitizen = async (user, payload) => {
     const ccp = require(`../ccp/connection-ration_shops.json`);
     const walletPath = path.join(process.cwd(), `wallet_rationshop`);
     const wallet = new FileSystemWallet(walletPath);
@@ -22,9 +22,9 @@ WheatCount = async (user, Type) => {
     const contract = network.getContract("rationshopcc");
 
     // Evaluate the specified transaction.
-    const result = await contract.evaluateTransaction("getWheatCount", Type);
+    const result = await contract.evaluateTransaction("transferToCitizen", payload.Quantity,payload.Type,payload.Holder,payload.ID);
 
     return JSON.parse(result.toString());
 };
 
-module.exports = WheatCount;
+module.exports = RiceCount;
