@@ -25,7 +25,7 @@ login = async () => {
 
     }
 
-    let response =await fetch("http://127.0.0.1:3000/api/auth/login",requestOptions)
+    let response =await fetch("http://localhost:3000/api/auth/login",requestOptions)
     let res = await response.json()
     console.log(res)
     
