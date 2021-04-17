@@ -309,6 +309,28 @@ func (cc *Chaincode) transferToShop(stub shim.ChaincodeStubInterface, params []s
 			return shim.Error(err.Error())
 		}
 
+
+		err = stub.DelState(responseRange.Key)
+		if err!=nil {
+			return shim.Error(err.Error())
+		}
+
+		indexName := "disType-disQuantity-disid"
+	    typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
+	    if err != nil{
+		    return shim.Error(err.Error())
+	    }
+
+	    value := []byte{0x00}
+	    compositekeyerr := stub.PutState(typequantityidkey, value)
+	    if compositekeyerr != nil{
+		   return shim.Error(compositekeyerr.Error())
+	    }
+
+
+	
+
+
 	}
 
 	args := util.ToChaincodeArgs("transferToCitizen", new_id, Type, strconv.Itoa(totransfer), "A", new_holder)
