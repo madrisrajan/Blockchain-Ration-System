@@ -23,7 +23,7 @@ router.post("/api/main/citizen/add", async (req, res) => {
                 console.log(err);
             }
             else{
-                console.log(doc);
+                console.log(docs);
             }
         });
     } catch (error) {
@@ -39,7 +39,7 @@ router.get("/api/main/citizen/ricecount/:ration",async (req, res) => {
     const Type = 'rice';
     try {
         ration_card_no = req.params.ration
-        let data = await CentralGovernment.GetRiceCount('central_gov', Type);
+        let data = await Citizen.GetRiceCount('central_gov', Type);
         console.log(data.toString());
         res.status(200).send(data.toString());
     } catch (error) {
@@ -48,12 +48,12 @@ router.get("/api/main/citizen/ricecount/:ration",async (req, res) => {
     }
 });
 
-router.get("/api/main/centralgov/wheatcount",async (req, res) => {
+router.get("/api/main/citizen/wheatcount",async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
 
     const Type = 'wheat';
     try {
-        let data = await CentralGovernment.GetWheatCount('central_gov', Type);
+        let data = await Citizen.GetWheatCount('central_gov', Type);
         console.log(data.toString());
         res.status(200).send(data.toString());
     } catch (error) {
@@ -61,5 +61,23 @@ router.get("/api/main/centralgov/wheatcount",async (req, res) => {
         res.status(404).send({ message: "Something went wrong" });
     }
 });
+
+
+router.get("/api/main/citizen/viewcitizen/:rationno",async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    const rationcardnumber = req.params.rationno;
+    console.log(rationcardnumber);
+    
+    try {
+        let data = await Citizen.ViewCitizen('citizen', rationcardnumber);
+        console.log(data);
+        res.status(200).send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({ message: "Something went wrong" });
+    }
+});
+
 
 module.exports = router;
