@@ -1,6 +1,7 @@
 const express = require("express");
 const md5 = require("md5")
 const Citizen = require("../../fabric/citizencc");
+const citizenregister = require('../models/citizenreg')
 
 const router = new express.Router();
 
@@ -11,11 +12,19 @@ router.post("/api/main/citizen/add", async (req, res) => {
         citizendata = JSON.parse(req.body.payload);
         citizendata.ID = md5(JSON.stringify(citizendata) + new Date().toString());
         console.log(citizendata)
-        await Citizen.AddCitizen('citizens', citizendata);
+        await Citizen.addCitizen('citizens', citizendata);
         res.status(200).send({
             message: "Citizen have been successfully Registered!",
             id: citizendata.ID,
             succode: "1",
+        });
+        citizenregister.findOneAndUpdate({username: citizendata.username},{isregistered: "1"},null,function(err,docs){
+            if(err){
+                console.log(err);
+            }
+            else{
+                console.log(doc);
+            }
         });
     } catch (error) {
         console.log(error);
