@@ -8,6 +8,7 @@ class App extends Component {
         Quantity : "",
        ricecount: "",
        wheatcount : "",
+       rationcardnumber : "",
 
     }
 
@@ -41,6 +42,7 @@ class App extends Component {
               
               Type : this.state.Type,
               Quantity : this.state.Quantity,
+              rationcardnumber : this.state.rationcardnumber,
            
         })
         })
@@ -104,7 +106,11 @@ class App extends Component {
              <TextField
               label='Quantity'
               variant='outlined'
-              required
+              onChange={(event) => {
+                  this.setState({
+                      Quantity : event.target.value
+                  })
+              }}
               >
             </TextField>
 <br />
@@ -112,7 +118,11 @@ class App extends Component {
              <TextField
               label='Citizen Ration card Number'
               variant='outlined'
-              required
+              onChange={(event) => {
+                  this.setState({
+                      rationcardnumber : event.target.value
+                  })
+              }}
               >
             </TextField>
 <br />

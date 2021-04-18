@@ -11,10 +11,11 @@ router.post("/api/main/ration/inputgrains", async (req, res) => {
         foodgraindata = JSON.parse(req.body.payload);
         foodgraindata.Holder = 'Citizen'
         foodgraindata.ID = md5(JSON.stringify(foodgraindata) + new Date().toString());
-        await RationShop.InputFoodGrains(req.user, foodgraindata);
+        console.log(foodgraindata)
+        await RationShop.transferToCitizen('ration', foodgraindata);
         res.status(200).send({
             message: "Grains has been successfully transferred!",
-            id: ChargeSheetData.ID,
+            id: foodgraindata.ID,
             succode : '1'
         });
     } catch (error) {

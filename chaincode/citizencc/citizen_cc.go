@@ -12,11 +12,15 @@ import (
 	sc "github.com/hyperledger/fabric-protos-go/peer"
 )
 
-type Chaincode struct{
+type Chaincode struct {
 }
 
+<<<<<<< Updated upstream
 
 type Foodgrain struct{
+=======
+type Foodgrain struct {
+>>>>>>> Stashed changes
 	ID                string `json:"ID"`
 	TYPE              string `json:"TYPE"`
 	Quantity          string `json:"Quantity"`
@@ -26,20 +30,22 @@ type Foodgrain struct{
 }
 
 type citizen struct {
-	ID            string `json:"ID"`
-	Name          string `json:"Name"`
-	Age           string `json:"Age"`
-	DOB           string `json:"DOB"`
-	Gender        string `json:"Gender"`
-	Address       string `json:"Address"`
-	MobileNumber  string `json:"MobileNumber"`
-	Rationcard_number  string `json:"Rationcard_number"`
-	
-	
-
-
+	ID                string `json:"ID"`
+	Name              string `json:"Name"`
+	Age               string `json:"Age"`
+	DOB               string `json:"DOB"`
+	Gender            string `json:"Gender"`
+	Address           string `json:"Address"`
+	MobileNumber      string `json:"MobileNumber"`
+	Rationcard_number string `json:"Rationcard_number"`
 }
 
+<<<<<<< Updated upstream
+=======
+func (cc *Chaincode) Init(stub shim.ChaincodeStubInterface) sc.Response {
+	return shim.Success(nil)
+}
+>>>>>>> Stashed changes
 
 // Invoke is called as a result of an application request to run the chaincode.
 func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
@@ -48,22 +54,25 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 
 	if fcn == "createNewCitizen" {
 		return cc.createNewCitizen(stub, params)
-	}else if fcn == "createNewfoodGrains"{
+	} else if fcn == "createNewfoodGrains" {
 		return cc.createNewfoodGrains(stub, params)
-	}else if fcn == "getRiceCount"{
+	} else if fcn == "getRiceCount" {
 		return cc.getRiceCount(stub, params)
-	}else if fcn == "getWheatCount"{
+	} else if fcn == "getWheatCount" {
 		return cc.getWheatCount(stub, params)
-	}else{
+	} else {
 		fmt.Println("INvoke() did not find func: " + fcn)
 		return shim.Error("Received unknown function invocation!")
 	}
 }
 
+<<<<<<< Updated upstream
 //Function to check if Registered
 func (cc *Chaincode) isuserRegistered()
 
 
+=======
+>>>>>>> Stashed changes
 // Function to enter new Foodgrains.
 func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 	// check Access
@@ -78,17 +87,16 @@ func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params [
 	}
 
 	// Check if params are non-empty.
-	for a:=0; a<8; a++ {
+	for a := 0; a < 8; a++ {
 		if len(params[a]) <= 0 {
 			return shim.Error("Argument must be a non-empty string")
 		}
 	}
 
-
 	id := params[0]
 	name := strings.ToLower(params[1])
-	age,err := strconv.Atoi(params[2])
-	if err!=nil {
+	age, err := strconv.Atoi(params[2])
+	if err != nil {
 		return shim.Error(err.Error())
 	}
 	dob := params[3]
@@ -106,7 +114,7 @@ func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params [
 	}
 
 	// Generate citizen from the information provided.
-	NewCitizen := &citizen{id,name,strconv.Itoa(age),dob,gender,address,mobilenumber,rationcardnumber}
+	NewCitizen := &citizen{id, name, strconv.Itoa(age), dob, gender, address, mobilenumber, rationcardnumber}
 
 	citizenJSONasBytes, err := json.Marshal(NewCitizen)
 	if err != nil {
@@ -114,20 +122,14 @@ func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params [
 	}
 
 	// Put state of newly generated citizen with Key => Id.
-	err = stub.PutState(id,citizenJSONasBytes)
+	err = stub.PutState(id, citizenJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-
-
 	return shim.Success(nil)
 
-
-
 }
-
-
 
 // Function to enter new Foodgrains.
 func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, params []string) sc.Response {
@@ -138,17 +140,16 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 	// Check if sufficient params are passed.
-	if len(params) !=  6{
+	if len(params) != 6 {
 		return shim.Error("Incorrect number of arguments. Expecting 5")
 	}
 
 	// Check if params are non-empty.
-	for a:=0; a<6; a++ {
+	for a := 0; a < 6; a++ {
 		if len(params[a]) <= 0 {
 			return shim.Error("Argument must be a non-empty string")
 		}
 	}
-
 
 	ID := params[0]
 	TYPE := strings.ToLower(params[1])
@@ -166,7 +167,7 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 	// Generate foodgrains from the information provided.
-	foodGrain := &Foodgrain{ID,TYPE,Quantity,Quality,Holder,Ration_no}
+	foodGrain := &Foodgrain{ID, TYPE, Quantity, Quality, Holder, Ration_no}
 
 	foodGrainJSONasBytes, err := json.Marshal(foodGrain)
 	if err != nil {
@@ -174,68 +175,62 @@ func (cc *Chaincode) createNewfoodGrains(stub shim.ChaincodeStubInterface, param
 	}
 
 	// Put state of newly generated foodgrains with Key => Id.
-	err = stub.PutState(ID,foodGrainJSONasBytes)
+	err = stub.PutState(ID, foodGrainJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
-
-	indexName := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
+	indexName := fmt.Sprintf("%sType~%sQuantity~%sid", Ration_no, Ration_no, Ration_no)
 	typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodGrain.TYPE, foodGrain.Quantity, foodGrain.ID})
-	if err != nil{
+	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	value := []byte{0x00}
 	compositekeyerr := stub.PutState(typequantityidkey, value)
-	if compositekeyerr != nil{
+	if compositekeyerr != nil {
 		return shim.Error(compositekeyerr.Error())
 	}
 
-
 	return shim.Success(nil)
 
-
-
 }
-
-
 
 //function to get Quantity of Rice
-func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []string) sc.Response{
+func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 
-	if len(params)!=2{
+	if len(params) != 2 {
 		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
-	if len(params[0])<=0 {
+	if len(params[0]) <= 0 {
 		return shim.Error("argument must not be empty!")
 	}
 
 	Type := strings.ToLower(params[0])
-	Ration_no:=params[1]
+	Ration_no := params[1]
 	var total int
-    total = 0
-	
-	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
+	total = 0
+
+	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid", Ration_no, Ration_no, Ration_no)
 	RiceResultIterator, err := stub.GetStateByPartialCompositeKey(compositeString, []string{Type})
-	
-	if err != nil{
-		return shim.Error(err.Error());
+
+	if err != nil {
+		return shim.Error(err.Error())
 	}
 
-	defer RiceResultIterator.Close();
+	defer RiceResultIterator.Close()
 	var i int
 
-	for i=0; RiceResultIterator.HasNext(); i++{
+	for i = 0; RiceResultIterator.HasNext(); i++ {
 		responseRange, err := RiceResultIterator.Next()
-		if err != nil{
+		if err != nil {
 			return shim.Error(err.Error())
 
 		}
 
 		objectType, compositeKeyPart, err := stub.SplitCompositeKey(responseRange.Key)
-		if err != nil{
+		if err != nil {
 			return shim.Error(err.Error())
 		}
 
@@ -246,7 +241,7 @@ func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []str
 		intreturnedQuantity, err := strconv.Atoi(returnedQuantity)
 
 		total += intreturnedQuantity
-	
+
 	}
 
 	finalQuantity := strconv.Itoa(total)
@@ -254,46 +249,42 @@ func (cc *Chaincode) getRiceCount(stub shim.ChaincodeStubInterface ,params []str
 	return shim.Success([]byte(finalQuantity))
 
 }
-
-
-
-
 
 //function to get Quantity of wheat
-func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface ,params []string) sc.Response{
+func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 
-	if len(params)!=2{
+	if len(params) != 2 {
 		return shim.Error("Incorrect number of argument. Expecting 1")
 	}
 
-	if len(params[0])<=0 {
+	if len(params[0]) <= 0 {
 		return shim.Error("argument must not be empty!")
 	}
 
 	Type := strings.ToLower(params[0])
 	var total int
-    total = 0
-	Ration_no :=params[1]
-	
-	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid",Ration_no,Ration_no,Ration_no)
+	total = 0
+	Ration_no := params[1]
+
+	compositeString := fmt.Sprintf("%sType~%sQuantity~%sid", Ration_no, Ration_no, Ration_no)
 	WheatResultIterator, err := stub.GetStateByPartialCompositeKey(compositeString, []string{Type})
-	
-	if err != nil{
-		return shim.Error(err.Error());
+
+	if err != nil {
+		return shim.Error(err.Error())
 	}
 
-	defer WheatResultIterator.Close();
+	defer WheatResultIterator.Close()
 	var i int
 
-	for i=0; WheatResultIterator.HasNext(); i++{
+	for i = 0; WheatResultIterator.HasNext(); i++ {
 		responseRange, err := WheatResultIterator.Next()
-		if err != nil{
+		if err != nil {
 			return shim.Error(err.Error())
 
 		}
 
 		objectType, compositeKeyPart, err := stub.SplitCompositeKey(responseRange.Key)
-		if err != nil{
+		if err != nil {
 			return shim.Error(err.Error())
 		}
 
@@ -304,7 +295,7 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface ,params []st
 		intreturnedQuantity, err := strconv.Atoi(returnedQuantity)
 
 		total += intreturnedQuantity
-	
+
 	}
 
 	finalQuantity := strconv.Itoa(total)
@@ -312,17 +303,6 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface ,params []st
 	return shim.Success([]byte(finalQuantity))
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 // Get Tx Creator Info
 func getTxCreatorInfo(stub shim.ChaincodeStubInterface) (string, string, error) {

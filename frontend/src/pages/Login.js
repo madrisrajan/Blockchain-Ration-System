@@ -29,7 +29,7 @@ login = async () => {
     let res = await response.json()
     console.log(res)
     
-    if(res.loginsuc === 1){
+    if(res.loginsuc === '2'){
     localStorage.setItem('username', this.state.username)
     localStorage.setItem('usergrp', this.state.group)
     localStorage.setItem('session', "ok")
@@ -42,7 +42,18 @@ login = async () => {
     else;
     console.log(this.state.redirect)
     
-    }else{
+    }
+    else if(res.loginsuc === '1'){
+        localStorage.setItem('username', this.state.username)
+    localStorage.setItem('usergrp', this.state.group)
+    localStorage.setItem('session', "ok")
+    
+       this.setState({
+           redirect: <Redirect to ='./register' /> 
+       })
+
+        }
+        else{
         this.setState ({redirect : 'wrong credential'})
         
     }
