@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const userJSON = require("./json/user-model.json");
+const userJSON = require("./json/citizen.json");
 require("../db/mongoose");
 
 const userInfo = new mongoose.Schema(userJSON)
