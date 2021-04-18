@@ -22,6 +22,16 @@ render() {
         <Button variant='contained' color='primary'> 
             View Government Policies
         </Button>
+        <Button variant='contained' color='primary'>
+        Get Rice Count
+        </Button>
+        <br />
+        <br/>
+         <Button variant='contained' color='primary'>
+        Get Wheat Count
+        </Button>
+        <br />
+        <br/>
     </div>
     )
     };

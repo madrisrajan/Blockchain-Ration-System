@@ -15,6 +15,35 @@ class App extends Component {
     message : "",
   }
 
+  async componentDidMount()  {
+        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!='citizens') this.setState({ redirect: <Redirect to="/login" /> });
+        console.log(localStorage.getItem("session"));
+  }
+
+  addcitizen = async () => {
+
+    const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              payload : JSON.stringify({
+                name: this.state.name,
+                age: this.state.age,
+                dob: this.state.dob,
+                gender : this.state.gender,
+                address : this.state.address,
+                mobilenumber: this.state.mobilenumber,
+                rationcardnumber : this.state.rationcardnumber,
+              })
+            }),
+        };
+
+        let response = await fetch("http://localhost:3000/api/auth/signup", requestOptions);
+        let res = await response.json();
+        console.log(res);
+        if(res.succode==='1') this.setState({redirect : Registerd successfully})
+  }
+
 render() {
     return(
         <div>
@@ -124,7 +153,7 @@ render() {
             />
             <br />
             <br />
-            <Button variant='contained' color='primary'>
+            <Button variant='contained' color='primary' onClick={this.addcitizen}>
                 Register
             </Button>
 

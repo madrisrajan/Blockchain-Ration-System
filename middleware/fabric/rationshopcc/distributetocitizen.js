@@ -22,9 +22,9 @@ DistributeToCitizen = async (user, payload) => {
     const contract = network.getContract("rationshopcc");
 
     // Evaluate the specified transaction.
-    await contract.submitTransaction("transferToCitizen", payload.Quantity,payload.Type,payload.Holder,payload.ID);
+    await contract.submitTransaction("transferToCitizen", payload.Quantity,payload.Type,payload.Holder,payload.ID,payload.rationcardnumber);
 
     
 };
 
-module.exports = RiceCount;
+module.exports = DistributeToCitizen;
