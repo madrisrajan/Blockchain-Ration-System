@@ -15,6 +15,7 @@ import (
 type Chaincode struct{
 }
 
+
 type Foodgrain struct{
 	ID                string `json:"ID"`
 	TYPE              string `json:"TYPE"`
@@ -40,10 +41,6 @@ type citizen struct {
 }
 
 
-func (cc *Chaincode) Init(stub shim.ChaincodeStubInterface) sc.Response {
-	return shim.Success(nil)
-}
-
 // Invoke is called as a result of an application request to run the chaincode.
 func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 	fcn, params := stub.GetFunctionAndParameters()
@@ -62,6 +59,9 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return shim.Error("Received unknown function invocation!")
 	}
 }
+
+//Function to check if Registered
+func (cc *Chaincode) isuserRegistered()
 
 
 // Function to enter new Foodgrains.

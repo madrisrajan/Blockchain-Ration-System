@@ -1,6 +1,7 @@
 const express = require('express');
 const sha256 = require('sha256');
 const User = require('../models/user');
+const citizenregister = require('../models/citizenreg')
 const router = new express.Router();
 
 router.post('/api/auth/login', (req,res) => {
@@ -10,7 +11,47 @@ router.post('/api/auth/login', (req,res) => {
     const passhash = sha256(req.body.password);
     const group = req.body.group;
 
-    try{
+    
+
+    if(group === 'citizens'){
+
+        try{
+            citizenregister.findOne({username},(err,doc) => {
+
+                if(err || doc == null) return res.sendStatus(404);
+                if(doc.passhash === passhash && doc.isregistered == '0'){
+
+                    res.status(200).send({
+                        message: 'login successful',
+                        loginsuc: "1",
+                        
+                    });
+
+                }else if(doc.passhash === passhash &&  doc.isregistered == '1'){
+
+                    res.status(200).send({
+                        message: 'login successful',
+                        loginsuc: "2",
+                    });
+
+                }else{
+                    res.status(401).send({
+                        message: 'login failed!!',
+                        loginsuc: "0",
+                    });
+                }
+
+            });
+        } catch (error) {
+             console.log(error)
+             res.status(500).send({
+             message : 'Server error',
+     });
+}
+
+    }else{
+
+            try{
         User.findOne({username}, (err, doc) => {
         if(err || doc == null) return res.sendStatus(404);
         if (doc.passhash === passhash) {
@@ -39,6 +80,10 @@ console.log(group)
         message : 'Server error',
     });
 }
+
+    }
+
+
 });
 
 router.post('/api/auth/signup', async (req,res) => {
@@ -47,9 +92,44 @@ router.post('/api/auth/signup', async (req,res) => {
     const username = req.body.username;
     const passhash = sha256(req.body.password);
     const group = req.body.group;
+    const isregistered = "0";
+
+    if(group === 'citizens'){
+
+        let newCitizen = {
+            username,
+            passhash,
+            group,
+            isregistered,
+        };
+        try{
+
+                // Create Wallet Identity for the Username
+                 const regUser = require(`../../fabric/reg_user/citizensuser`);
+                 await regUser(newCitizen);
+
+                 // Add username & passhash to the MongoDB Auth Database
+                 citizenregister.create(newCitizen, (err, doc) => {
+                     console.log(err);
+                     res.status(200).send({
+                         message : 'Registered successfully'
+                     });
+                 });
+        }
+
+         catch (error) {
+                    console.log(error)
+                    res.status(500).send({
+                        message : 'Server failed',
+                    });
+             
+
+                }    
 
 
-                try{
+
+    }else{
+         try{
                     let newUser = {
                         username,
                         passhash,
@@ -78,6 +158,11 @@ router.post('/api/auth/signup', async (req,res) => {
              
 
                 }
+
+    }
+
+
+               
         
   
 });
