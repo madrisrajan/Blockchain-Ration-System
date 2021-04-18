@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
 import {TextField, Button, FormControl, Select, MenuItem} from '@material-ui/core'
+import {Redirect} from 'react-router-dom'
+
 class App extends Component {
   state : {
-    profile : {
     name : "",
     age : "",
     dob : "",
@@ -10,8 +11,8 @@ class App extends Component {
     address : "",
     mobilenumber: "",
     rationcardnumber : "",
+    username : "",
     redirect : null,
-  },
     message : "",
   }
 
@@ -34,17 +35,22 @@ class App extends Component {
                 address : this.state.address,
                 mobilenumber: this.state.mobilenumber,
                 rationcardnumber : this.state.rationcardnumber,
+                username : localStorage.getItem('username'),
               })
             }),
         };
+        console.log(this.state.profile)
 
-        let response = await fetch("http://localhost:3000/api/auth/signup", requestOptions);
+        let response = await fetch("http://localhost:3000/api/main/citizen/add", requestOptions);
         let res = await response.json();
         console.log(res);
-        if(res.succode==='1') this.setState({redirect : Registerd successfully})
+        if(res.succode==='1') this.setState({redirect : <Redirect to = '/login' />})
   }
 
 render() {
+   if(this.state && this.state.redirect){
+        return this.state.redirect
+    }
     return(
         <div>
              <h2>Register a new Citizen</h2>
@@ -56,9 +62,8 @@ render() {
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+                
                   name : event.target.value,
-                },
 
               }) }
             />
@@ -67,12 +72,13 @@ render() {
             <TextField
               label='Age'
               variant='outlined'
+              
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+                
                   age : event.target.value,
-                },
+               
 
               }) }
               
@@ -86,9 +92,9 @@ render() {
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+                
                   dob : event.target.value,
-                },
+                
 
               }) }
             />
@@ -98,9 +104,9 @@ render() {
               <Select onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+               
                   gender : event.target.value,
-                },
+               
 
               }) }
               >
@@ -116,9 +122,9 @@ render() {
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+                
                   address : event.target.value,
-                },
+               
 
               }) }
             />
@@ -131,9 +137,9 @@ render() {
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+               
                   mobilenumber : event.target.value,
-                },
+                
 
               }) }
             />
@@ -145,9 +151,9 @@ render() {
               onChange={(event) =>
                 
               this.setState({ 
-                profile : {
+                
                   rationcardnumber : event.target.value,
-                },
+              
 
               }) }
             />
