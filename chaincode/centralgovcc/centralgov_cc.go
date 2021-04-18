@@ -322,15 +322,15 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 		}
 
 		indexName := "Type~Quantity~id"
-	typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
-	if err != nil {
-		return shim.Error(err.Error())
-	}
-	value := []byte{0x00}
-	compositekeyerr := stub.PutState(typequantityidkey, value)
-	if compositekeyerr != nil {
-		return shim.Error(compositekeyerr.Error())
-	}
+		typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		value := []byte{0x00}
+		compositekeyerr := stub.PutState(typequantityidkey, value)
+		if compositekeyerr != nil {
+			return shim.Error(compositekeyerr.Error())
+		}
 
 	}
 
@@ -339,8 +339,6 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)
 	}
-
-	
 
 	return shim.Success([]byte("transfer to state successful"))
 

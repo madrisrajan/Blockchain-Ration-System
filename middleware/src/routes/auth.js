@@ -64,7 +64,7 @@ console.log(group)
 
             res.status(200).send({
                 usergrp: doc.group,
-                loginsuc: 1,
+                loginsuc: '2',
                 message : 'Login Successful',
             });
         }else{

@@ -15,12 +15,7 @@ import (
 type Chaincode struct {
 }
 
-<<<<<<< Updated upstream
-
-type Foodgrain struct{
-=======
 type Foodgrain struct {
->>>>>>> Stashed changes
 	ID                string `json:"ID"`
 	TYPE              string `json:"TYPE"`
 	Quantity          string `json:"Quantity"`
@@ -40,12 +35,9 @@ type citizen struct {
 	Rationcard_number string `json:"Rationcard_number"`
 }
 
-<<<<<<< Updated upstream
-=======
 func (cc *Chaincode) Init(stub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
 }
->>>>>>> Stashed changes
 
 // Invoke is called as a result of an application request to run the chaincode.
 func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
@@ -60,26 +52,17 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return cc.getRiceCount(stub, params)
 	} else if fcn == "getWheatCount" {
 		return cc.getWheatCount(stub, params)
+	} else if fcn == "viewCitizenProfile" {
+		return cc.viewCitizenProfile(stub, params)
 	} else {
 		fmt.Println("INvoke() did not find func: " + fcn)
 		return shim.Error("Received unknown function invocation!")
 	}
 }
 
-<<<<<<< Updated upstream
-//Function to check if Registered
-func (cc *Chaincode) isuserRegistered()
-
-
-=======
->>>>>>> Stashed changes
 // Function to enter new Foodgrains.
 func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params []string) sc.Response {
 	// check Access
-	creatorOrg, creatorCertIssuer, err := getTxCreatorInfo(stub)
-	if !authenticateRationshop(creatorOrg, creatorCertIssuer) {
-		return shim.Error("{\"Error\":\"Access Denied!\",\"Payload\":{\"MSP\":\"" + creatorOrg + "\",\"CA\":\"" + creatorCertIssuer + "\"}}")
-	}
 
 	// Check if sufficient params are passed.
 	if len(params) != 8 {
@@ -122,10 +105,22 @@ func (cc *Chaincode) createNewCitizen(stub shim.ChaincodeStubInterface, params [
 	}
 
 	// Put state of newly generated citizen with Key => Id.
-	err = stub.PutState(id, citizenJSONasBytes)
+	err = stub.PutState(rationcardnumber, citizenJSONasBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
+
+	// indexName := "citrationnumber-citid"
+	// rationnumbertypekey, err := stub.CreateCompositeKey(indexName, []string{NewCitizen.rationcardnumber, NewCitizen.ID})
+	// if err != nil {
+	// 	return shim.Error(err.Error())
+	// }
+
+	// value := []byte{0x00}
+	// compositekeyerr := stub.PutState(rationnumbertypekey, value)
+	// if compositekeyerr != nil {
+	// 	return shim.Error(compositekeyerr.Error())
+	// }
 
 	return shim.Success(nil)
 
@@ -301,6 +296,55 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []st
 	finalQuantity := strconv.Itoa(total)
 
 	return shim.Success([]byte(finalQuantity))
+
+}
+
+func (cc *Chaincode) viewCitizenProfile(stub shim.ChaincodeStubInterface, params []string) sc.Response {
+	// check Access
+
+	// Check if sufficient Params passed
+	if len(params) != 1 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	// Check if Params are non-empty
+	for a := 0; a < 1; a++ {
+		if len(params[a]) <= 0 {
+			return shim.Error("Argument must be a non-empty string")
+		}
+	}
+
+	rationcardnumber := params[0]
+
+	// CitizenResultIterator, err := stub.GetStateByPartialCompositeKey("citrationnumber-citid", []string{rationcardnumber})
+
+	// if err != nil {
+	// 	return shim.Error(err.Error())
+	// }
+
+	// defer CitizenResultIterator.Close()
+	// var i int
+
+	// for i = 0; CitizenResultIterator.HasNext(); i++ {
+	// 	responseRange, err := CitizenResultIterator.Next()
+	// 	if err != nil {
+	// 		return shim.Error(err.Error())
+
+	// 	}
+
+	// 	objectType, compositeKeyPart, err := stub.SplitCompositeKey(responseRange.Key)
+	// 	if err != nil {
+	// 		return shim.Error(err.Error())
+	// 	}
+
+	// 	returnedID := compositeKeyPart[1]
+
+	citizenAsBytes, err := stub.GetState(rationcardnumber)
+	if err != nil {
+		return shim.Error("Failed to check if Asset exists!")
+	}
+	// }
+
+	return shim.Success(citizenAsBytes)
 
 }
 

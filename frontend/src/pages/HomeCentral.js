@@ -47,11 +47,13 @@ class App extends Component {
 
     }
 
+
 render() {
     if(this.state && this.state.redirect){
             return this.state.redirect
         }
-    return <div>
+    return (
+    <div>
         <h1>Central Government Home Page</h1>
         <Link to='/createfoodgrains'>
         <Button variant='contained' color='primary' >Create Food Grains</Button></Link>
@@ -73,13 +75,16 @@ render() {
          >Get Wheat Count</Button>
         <br />
         <br />
+        <Link to='/viewcitizenprofile'>
         <Button variant='contained' color='primary' >View Citizen Profile</Button>
+        </Link>
         <br />
         <br />
         <Button variant='contained' color='primary' >View Ration Shops Profile</Button>
     
         </div>
-    };
+    )
+    }
 }
 
     export default App

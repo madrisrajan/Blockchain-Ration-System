@@ -19,6 +19,7 @@ import distributeToState from './pages/central/distributeToState'
 import distributeToDistrict from './pages/state/distributeToDistrict'
 import distributeToRation from './pages/district/distributeToRation'
 import distributeToCitizen from './pages/ration/distributeToCitizen'
+import viewCitizenProfile from './pages/central/viewcitizen'
 
 
 
@@ -44,6 +45,7 @@ function App() {
        <Route path='/distributetodistrict' component={ distributeToDistrict }></Route>
        <Route path='/distributetoration' component={ distributeToRation}></Route>
        <Route path='/distributetocitizen' component={ distributeToCitizen}></Route>
+       <Route path='/viewcitizenprofile' component={ viewCitizenProfile}></Route>
 
 
 
