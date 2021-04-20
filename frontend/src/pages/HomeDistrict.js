@@ -73,9 +73,9 @@ render() {
     < br />
     < br />
 
-          <Button variant='contained' color='primary'>
-          View Ration Shops Profile
-          </Button>
+          <Link to='/viewcitizenprofile'>
+        <Button variant='contained' color='primary' >View Citizen Profile</Button>
+        </Link>
           <br />
           <br />
 

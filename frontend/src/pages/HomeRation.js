@@ -70,9 +70,9 @@ render() {
     </Button>
     < br />
     < br />
-    <Button variant='contained' color='primary'>
-        View Citizen Profile
-    </Button>
+    <Link to='/viewcitizenprofile'>
+        <Button variant='contained' color='primary' >View Citizen Profile</Button>
+        </Link>
     </div>
     }
 };
