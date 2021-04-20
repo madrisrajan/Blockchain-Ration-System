@@ -47,6 +47,20 @@ class App extends Component {
 
     }
 
+    gethistory = async () => {
+
+        const requestOptions = {
+        method : "GET",
+        headers: { "Content-Type": "application/json" },headers: { "Content-Type": "application/json" }
+
+    }
+
+    let response = await fetch("http://localhost:3000/api/main/centralgov/gethistory",requestOptions) 
+    let res = await response.json()
+    console.log(res)
+    // this.setState ({redirect : res})
+
+    }
 
 render() {
     if(this.state && this.state.redirect){
@@ -81,6 +95,9 @@ render() {
         <br />
         <br />
         <Button variant='contained' color='primary' >View Ration Shops Profile</Button>
+        <br />
+        <br />
+        <Button variant='contained' color='primary' onClick={(this.gethistory)} >View History</Button>
     
         </div>
     )
