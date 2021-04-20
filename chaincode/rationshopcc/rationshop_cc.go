@@ -215,6 +215,8 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []st
 
 }
 
+
+
 // Function to transfer items to citizens
 
 func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params []string) sc.Response {
@@ -225,16 +227,16 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 		return shim.Error("{\"Error\":\"Access Denied!\",\"Payload\":{\"MSP\":\"" + creatorOrg + "\",\"CA\":\"" + creatorCertIssuer + "\"}}")
 	}
 
-	// Check if sufficient Params passed
-	if len(params) != 5 {
-		return shim.Error("Incorrect number of arguments. Expecting 5")
-	}
-	// Check if Params are non-empty
-	for a := 0; a < 5; a++ {
-		if len(params[a]) <= 0 {
-			return shim.Error("Argument must be a non-empty string")
-		}
-	}
+// Check if sufficient Params passed
+    if len(params) != 5 {
+       return shim.Error("Incorrect number of arguments. Expecting 4")
+}
+// Check if Params are non-empty
+    for a := 0; a < 5; a++ {
+        if len(params[a]) <= 0 {
+	        return shim.Error("Argument must be a non-empty string")
+   }
+}
 
 	quantity_to_citizen, err := strconv.Atoi(params[0])
 	if err != nil {
@@ -244,7 +246,7 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 	new_holder := strings.ToLower(params[2])
 	new_id := params[3]
 	ration_card_no := params[4]
-	final_transfer := quantity_to_citizen
+	final_transfer:= quantity_to_citizen
 
 	ItemIdxIterator, err := stub.GetStateByPartialCompositeKey("ratType-ratQuantity-ratid", []string{Type})
 
@@ -309,6 +311,7 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 			return shim.Error(err.Error())
 		}
 
+
 		err = stub.DelState(responseRange.Key)
 		if err != nil {
 			return shim.Error(err.Error())
@@ -316,19 +319,22 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 
 		indexName := "ratType-ratQuantity-ratid"
 		typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
-		if err != nil {
+		if err != nil{
 			return shim.Error(err.Error())
 		}
-
+	
 		value := []byte{0x00}
 		compositekeyerr := stub.PutState(typequantityidkey, value)
-		if compositekeyerr != nil {
+		if compositekeyerr != nil{
 			return shim.Error(compositekeyerr.Error())
 		}
 
-	}
+	
 
-	args := util.ToChaincodeArgs("createNewfoodGrains", new_id, Type, strconv.Itoa(final_transfer), "A", new_holder, ration_card_no)
+
+}
+
+	args := util.ToChaincodeArgs("createNewfoodGrain", new_id, Type,strconv.Itoa(final_transfer),"A",new_holder,ration_card_no)
 	response := stub.InvokeChaincode("citizencc", args, "mainchannel")
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)

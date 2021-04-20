@@ -49,4 +49,17 @@ router.get("/api/main/stategov/wheatcount",async (req, res) => {
     }
 });
 
+router.get("/api/main/stategov/gethistory",async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    try {
+        let data = await StateGovernment.GetHistory();
+        // console.log(data.toString());
+        res.status(200).send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({ message: "Something went wrong" });
+    }
+});
+
 module.exports = router;

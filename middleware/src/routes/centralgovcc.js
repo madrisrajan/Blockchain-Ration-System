@@ -71,5 +71,18 @@ router.get("/api/main/centralgov/wheatcount",async (req, res) => {
     }
 });
 
+router.get("/api/main/centralgov/gethistory",async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    try {
+        let data = await CentralGovernment.GetHistory();
+        // console.log(data.toString());
+        res.status(200).send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({ message: "Something went wrong" });
+    }
+});
+
 module.exports = router;
 
