@@ -25,9 +25,9 @@ viewCitizenProfile = async (user, rationcardnumber) => {
     //Evaluate the specified transaction.
     const result = await contract.evaluateTransaction("viewCitizenProfile",rationcardnumber);
 
-     console.log(result.toString())
+     console.log(result)
 
-    return JSON.parse(result.toString());
+    return JSON.parse(result);
 
 
 };
