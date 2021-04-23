@@ -41,6 +41,8 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return cc.getWheatCount(stub, params)
 	} else if fcn == "transferToCitizen" {
 		return cc.transferToCitizen(stub, params)
+	} else if fcn == "getHistoryForRationShop" {
+		return cc.getHistoryForRationShop(stub)
 	} else {
 		fmt.Println("INvoke() did not find func: " + fcn)
 		return shim.Error("Received unknown function invocation!")
@@ -342,6 +344,186 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 
 	return shim.Success([]byte("transfer to district successful"))
 
+}
+
+//function to get history
+func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) sc.Response {
+
+
+
+
+	fmt.Printf("- start getHistoryForRationShops\n")
+	Type:= "rice"
+     // buffer is a JSON array containing historic values for the foodgrains
+	var buffer bytes.Buffer
+	buffer.WriteString("[")
+	bArrayMemberAlreadyWritten := false
+
+	ResultIterator, err := stub.GetStateByPartialCompositeKey("ratType~ratQuantity~ratid", []string{Type})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	defer ResultIterator.Close()
+
+	for ResultIterator.HasNext(){
+
+		responseRange, err := ResultIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		objectType, compositeKeyPart, err := stub.SplitCompositeKey(responseRange.Key)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
+
+		id:=  compositeKeyPart[2]
+
+		resultsIterator, err := stub.GetHistoryForKey(id)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		defer resultsIterator.Close()
+	
+		
+
+	
+		// bArrayMemberAlreadyWritten = false
+		for resultsIterator.HasNext() {
+			response, err := resultsIterator.Next()
+			if err != nil {
+				return shim.Error(err.Error())
+			}
+			// Add a comma before array members, suppress it for the first array member
+			if bArrayMemberAlreadyWritten == true {
+				buffer.WriteString(",")
+			}
+			buffer.WriteString("{\"TxId\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(response.TxId)
+			buffer.WriteString("\"")
+	
+			buffer.WriteString(", \"Value\":")
+			// if it was a delete operation on given key, then we need to set the
+			//corresponding value null. Else, we will write the response.Value
+			//as-is (as the Value itself a JSON foodgrain)
+			if response.IsDelete {
+				buffer.WriteString("null")
+			} else {
+				buffer.WriteString(string(response.Value))
+			}
+	
+			buffer.WriteString(", \"Timestamp\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
+			buffer.WriteString("\"")
+	
+			buffer.WriteString(", \"IsDelete\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(strconv.FormatBool(response.IsDelete))
+			buffer.WriteString("\"")
+	
+			buffer.WriteString("}")
+			bArrayMemberAlreadyWritten = true
+		}
+		
+	
+		fmt.Printf("- getHistoryForRationshops returning:\n%s\n", buffer.String())
+
+	}
+
+	// buffer.WriteString(",")
+
+	Type = "wheat"
+
+	ResultIterator, err = stub.GetStateByPartialCompositeKey("ratType~ratQuantity~ratid", []string{Type})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	defer ResultIterator.Close()
+
+	for ResultIterator.HasNext(){
+
+		responseRange, err := ResultIterator.Next()
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		objectType, compositeKeyPart, err := stub.SplitCompositeKey(responseRange.Key)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
+
+		id:=  compositeKeyPart[2]
+
+		resultsIterator, err := stub.GetHistoryForKey(id)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+		defer resultsIterator.Close()
+	
+		
+
+	
+		// bArrayMemberAlreadyWritten = false
+		for resultsIterator.HasNext() {
+			response, err := resultsIterator.Next()
+			if err != nil {
+				return shim.Error(err.Error())
+			}
+			// Add a comma before array members, suppress it for the first array member
+			if bArrayMemberAlreadyWritten == true {
+				buffer.WriteString(",")
+			}
+			buffer.WriteString("{\"TxId\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(response.TxId)
+			buffer.WriteString("\"")
+	
+			buffer.WriteString(", \"Value\":")
+			// if it was a delete operation on given key, then we need to set the
+			//corresponding value null. Else, we will write the response.Value
+			//as-is (as the Value itself a JSON foodgrain)
+			if response.IsDelete {
+				buffer.WriteString("null")
+			} else {
+				buffer.WriteString(string(response.Value))
+			}
+	
+			buffer.WriteString(", \"Timestamp\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
+			buffer.WriteString("\"")
+	
+			buffer.WriteString(", \"IsDelete\":")
+			buffer.WriteString("\"")
+			buffer.WriteString(strconv.FormatBool(response.IsDelete))
+			buffer.WriteString("\"")
+	
+			buffer.WriteString("}")
+			bArrayMemberAlreadyWritten = true
+		}
+		
+	
+		fmt.Printf("- getHistoryForDistrictOffice returning:\n%s\n", buffer.String())
+
+	}
+
+
+
+	buffer.WriteString("]")
+
+	
+
+
+
+	return shim.Success(buffer.Bytes())
 }
 
 // Get Tx Creator Info
