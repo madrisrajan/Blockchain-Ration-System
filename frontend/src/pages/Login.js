@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText } from "@material-ui/core";
 import {Redirect} from 'react-router-dom'
+import formbg from '../formbg.jpg'
+
 
 
 class App extends Component {
@@ -68,12 +70,15 @@ render() {
 
     
     return (
-        <div>
-           <h2>Login</h2>
-            <FormControl
-                
-                  
-            >
+    <div style={{height:window.innerHeight,width:"100%",margin:"0px"}}>
+           <h2 >Login</h2>
+
+        <div style={{width: "800px",marginLeft:"28%",height:"350px",marginTop:"100px",boxShadow:"5px 10px 10px 5px grey",backgroundColor:"white",borderRadius:"10px 10px 10px 10px",backgroundImage:`url(${formbg})`,backgroundSize:"contain"}}>
+        <div style={{display:"inline-block",height:"100%",width:"50%",float:"left"}}>
+        <img src={process.env.PUBLIC_URL + 'login.png'} style={{width:"100%",height:"100%"}}/>
+        </div>
+         <div style={{display:"inline-block",height:"100%",width:"50%",float:"top",paddingTop:"30px"}}>
+            <FormControl style={{float:"top"}}>
                 <Select 
                 // value = {this.state.group}
                 onChange={(event) => {
@@ -86,12 +91,13 @@ render() {
                     <MenuItem value={'ration_shops'}>Ration Shop</MenuItem>
                     <MenuItem value={'citizens'}>Citizen</MenuItem>
                 </Select>
-                <FormHelperText>Please choose the domain you belong to</FormHelperText>
+                <FormHelperText><b>Please choose the domain you belong to</b></FormHelperText>
             </FormControl>
             <br />
             <br />
             <TextField
               label='Username'
+
               
               variant='outlined'
             //   value = {this.state.username}
@@ -123,8 +129,13 @@ render() {
                >
                 Login
             </Button>
+            </div>
+
+        </div>    
+
             
-        </div>
+            
+    </div>
     )
 }
 

@@ -50,4 +50,17 @@ router.get("/api/main/district/wheatcount",async (req, res) => {
     }
 });
 
+router.get("/api/main/district/gethistory",async (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    try {
+        let data = await DistrictOffice.GetHistory();
+        // console.log(data.toString());
+        res.status(200).send(data);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send({ message: "Something went wrong" });
+    }
+});
+
 module.exports = router;
