@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"bitbucket.org/mediumblockchain/m3/common/util"
 	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
@@ -217,8 +219,6 @@ func (cc *Chaincode) getWheatCount(stub shim.ChaincodeStubInterface, params []st
 
 }
 
-
-
 // Function to transfer items to citizens
 
 func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params []string) sc.Response {
@@ -229,16 +229,16 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 		return shim.Error("{\"Error\":\"Access Denied!\",\"Payload\":{\"MSP\":\"" + creatorOrg + "\",\"CA\":\"" + creatorCertIssuer + "\"}}")
 	}
 
-// Check if sufficient Params passed
-    if len(params) != 5 {
-       return shim.Error("Incorrect number of arguments. Expecting 4")
-}
-// Check if Params are non-empty
-    for a := 0; a < 5; a++ {
-        if len(params[a]) <= 0 {
-	        return shim.Error("Argument must be a non-empty string")
-   }
-}
+	// Check if sufficient Params passed
+	if len(params) != 5 {
+		return shim.Error("Incorrect number of arguments. Expecting 4")
+	}
+	// Check if Params are non-empty
+	for a := 0; a < 5; a++ {
+		if len(params[a]) <= 0 {
+			return shim.Error("Argument must be a non-empty string")
+		}
+	}
 
 	quantity_to_citizen, err := strconv.Atoi(params[0])
 	if err != nil {
@@ -248,7 +248,7 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 	new_holder := strings.ToLower(params[2])
 	new_id := params[3]
 	ration_card_no := params[4]
-	final_transfer:= quantity_to_citizen
+	final_transfer := quantity_to_citizen
 
 	ItemIdxIterator, err := stub.GetStateByPartialCompositeKey("ratType-ratQuantity-ratid", []string{Type})
 
@@ -313,7 +313,6 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 			return shim.Error(err.Error())
 		}
 
-
 		err = stub.DelState(responseRange.Key)
 		if err != nil {
 			return shim.Error(err.Error())
@@ -321,22 +320,19 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 
 		indexName := "ratType-ratQuantity-ratid"
 		typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
-		if err != nil{
+		if err != nil {
 			return shim.Error(err.Error())
 		}
-	
+
 		value := []byte{0x00}
 		compositekeyerr := stub.PutState(typequantityidkey, value)
-		if compositekeyerr != nil{
+		if compositekeyerr != nil {
 			return shim.Error(compositekeyerr.Error())
 		}
 
-	
+	}
 
-
-}
-
-	args := util.ToChaincodeArgs("createNewfoodGrain", new_id, Type,strconv.Itoa(final_transfer),"A",new_holder,ration_card_no)
+	args := util.ToChaincodeArgs("createNewfoodGrain", new_id, Type, strconv.Itoa(final_transfer), "A", new_holder, ration_card_no)
 	response := stub.InvokeChaincode("citizencc", args, "mainchannel")
 	if response.Status != shim.OK {
 		return shim.Error(response.Message)
@@ -349,24 +345,21 @@ func (cc *Chaincode) transferToCitizen(stub shim.ChaincodeStubInterface, params 
 //function to get history
 func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) sc.Response {
 
-
-
-
 	fmt.Printf("- start getHistoryForRationShops\n")
-	Type:= "rice"
-     // buffer is a JSON array containing historic values for the foodgrains
+	Type := "rice"
+	// buffer is a JSON array containing historic values for the foodgrains
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	bArrayMemberAlreadyWritten := false
 
-	ResultIterator, err := stub.GetStateByPartialCompositeKey("ratType~ratQuantity~ratid", []string{Type})
+	ResultIterator, err := stub.GetStateByPartialCompositeKey("ratType-ratQuantity-ratid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -380,17 +373,14 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -405,7 +395,7 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -415,22 +405,21 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForRationshops returning:\n%s\n", buffer.String())
 
 	}
@@ -439,14 +428,14 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 
 	Type = "wheat"
 
-	ResultIterator, err = stub.GetStateByPartialCompositeKey("ratType~ratQuantity~ratid", []string{Type})
+	ResultIterator, err = stub.GetStateByPartialCompositeKey("ratType-ratQuantity-ratid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -460,17 +449,14 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -485,7 +471,7 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -495,33 +481,26 @@ func (cc *Chaincode) getHistoryForRationShop(stub shim.ChaincodeStubInterface) s
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForDistrictOffice returning:\n%s\n", buffer.String())
 
 	}
 
-
-
 	buffer.WriteString("]")
-
-	
-
-
 
 	return shim.Success(buffer.Bytes())
 }

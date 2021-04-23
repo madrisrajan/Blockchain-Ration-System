@@ -130,7 +130,7 @@ class App extends Component {
             </TextField>
             < br/>
             < br />
-            <Button variant='contained' onClick={this.distributeToState}>
+            <Button variant='contained' color='primary' onClick={this.distributeToState}>
                 Submit
             </Button>
 

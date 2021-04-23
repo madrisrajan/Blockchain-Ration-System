@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"bitbucket.org/mediumblockchain/m3/common/util"
 	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
@@ -41,7 +43,7 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return cc.getWheatCount(stub, params)
 	} else if fcn == "transferToShop" {
 		return cc.transferToShop(stub, params)
-	} else if fcn=="getHistoryForDistrictOffice" {
+	} else if fcn == "getHistoryForDistrictOffice" {
 		return cc.getHistoryForDistrictOffice(stub)
 	} else {
 		fmt.Println("INvoke() did not find func: " + fcn)
@@ -343,24 +345,21 @@ func (cc *Chaincode) transferToShop(stub shim.ChaincodeStubInterface, params []s
 //function to get history
 func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterface) sc.Response {
 
-
-
-
 	fmt.Printf("- start getHistoryForStateGovernment\n")
-	Type:= "rice"
-     // buffer is a JSON array containing historic values for the foodgrains
+	Type := "rice"
+	// buffer is a JSON array containing historic values for the foodgrains
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	bArrayMemberAlreadyWritten := false
 
-	ResultIterator, err := stub.GetStateByPartialCompositeKey("disType~disQuantity~disid", []string{Type})
+	ResultIterator, err := stub.GetStateByPartialCompositeKey("disType-disQuantity-disid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -374,17 +373,14 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -399,7 +395,7 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -409,22 +405,21 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForDistrictOffice returning:\n%s\n", buffer.String())
 
 	}
@@ -433,14 +428,14 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 
 	Type = "wheat"
 
-	ResultIterator, err = stub.GetStateByPartialCompositeKey("disType~disQuantity~disid", []string{Type})
+	ResultIterator, err = stub.GetStateByPartialCompositeKey("disType-disQuantity-disid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -454,17 +449,14 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -479,7 +471,7 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -489,33 +481,26 @@ func (cc *Chaincode) getHistoryForDistrictOffice(stub shim.ChaincodeStubInterfac
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForDistrictOffice returning:\n%s\n", buffer.String())
 
 	}
 
-
-
 	buffer.WriteString("]")
-
-	
-
-
 
 	return shim.Success(buffer.Bytes())
 }

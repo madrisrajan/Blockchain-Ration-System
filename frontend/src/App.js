@@ -31,24 +31,25 @@ function App() {
     <div className="App" style={{height: window.innerHeight}}>
         <h1 style={{marginTop:"50px",fontWeight:"1000",fontSize:"42px",fontFamily:"serif"}}>PUBLIC DISTRIBUTION SYSTEM</h1>
        
-       <Route path='/trial' component={Trial}></Route>
-       <Route path='/register' component={Register}></Route>
-       <Route path='/home' component= {Home }></Route>
-        <Route path='/login' component={ Login}></Route>
-        <Route path='/signup' component={SignUp}></Route>
-        <Route path='/history' component={History}></Route>
-       <Route path='/homecentral' component={ HomeCentral}></Route>
-       <Route path='/homestate' component={ HomeState}></Route>
-       <Route path='/homedistrict' component={ HomeDistrict}></Route>
-       <Route path='/homeration' component={ HomeRation}></Route>
-       <Route path='/homecitizen' component={ HomeCitizen}></Route>
-       <Route path='/newCitizen' component={ newCitizen}></Route>
-       <Route path='/createfoodgrains' component={ createFoodGrains}></Route>
-       <Route path='/distributetostate' component={ distributeToState}></Route>
-       <Route path='/distributetodistrict' component={ distributeToDistrict }></Route>
-       <Route path='/distributetoration' component={ distributeToRation}></Route>
-       <Route path='/distributetocitizen' component={ distributeToCitizen}></Route>
-       <Route path='/viewcitizenprofile' component={ viewCitizenProfile}></Route>
+       <Route exact path='/trial' component={Trial}></Route>
+       <Route exact path='/register' component={Register}></Route>
+       
+        <Route exact path='/login' component={Login}></Route>
+        <Route exact path='/signup' component={SignUp}></Route>
+        <Route exact path='/history' component={History}></Route> 
+       <Route exact path='/homecentral' component={ HomeCentral}></Route>
+       <Route exact path='/homestate' component={ HomeState}></Route>
+       <Route exact path='/homedistrict' component={ HomeDistrict}></Route>
+       <Route exact path='/homeration' component={ HomeRation}></Route>
+       <Route exact path='/homecitizen' component={ HomeCitizen}></Route>
+       <Route exact path='/newCitizen' component={ newCitizen}></Route>
+       <Route exact path='/createfoodgrains' component={ createFoodGrains}></Route>
+       <Route exact path='/distributetostate' component={ distributeToState}></Route>
+       <Route exact path='/distributetodistrict' component={ distributeToDistrict }></Route>
+       <Route exact path='/distributetoration' component={ distributeToRation}></Route>
+       <Route exact path='/distributetocitizen' component={ distributeToCitizen}></Route>
+       <Route exact path='/viewcitizenprofile' component={ viewCitizenProfile}></Route>
+       <Route exact path='/' component={ Login}></Route>
 
 
 

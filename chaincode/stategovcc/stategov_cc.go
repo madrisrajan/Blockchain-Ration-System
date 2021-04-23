@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
-	"bytes"
 	"time"
 
 	"bitbucket.org/mediumblockchain/m3/common/util"
@@ -312,25 +312,22 @@ func (cc *Chaincode) transferToDistrict(stub shim.ChaincodeStubInterface, params
 			return shim.Error(err.Error())
 		}
 
-
 		err = stub.DelState(responseRange.Key)
-		if err!=nil {
+		if err != nil {
 			return shim.Error(err.Error())
 		}
 
 		indexName := "stType-stQuantity-stid"
-	    typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
-	    if err != nil{
-		    return shim.Error(err.Error())
-	    }
+		typequantityidkey, err := stub.CreateCompositeKey(indexName, []string{foodgrainToUpdate.TYPE, foodgrainToUpdate.Quantity, foodgrainToUpdate.ID})
+		if err != nil {
+			return shim.Error(err.Error())
+		}
 
-	    value := []byte{0x00}
-	    compositekeyerr := stub.PutState(typequantityidkey, value)
-	    if compositekeyerr != nil{
-		    return shim.Error(compositekeyerr.Error())
-	    }
-	
-
+		value := []byte{0x00}
+		compositekeyerr := stub.PutState(typequantityidkey, value)
+		if compositekeyerr != nil {
+			return shim.Error(compositekeyerr.Error())
+		}
 
 	}
 
@@ -347,24 +344,21 @@ func (cc *Chaincode) transferToDistrict(stub shim.ChaincodeStubInterface, params
 //function to get history for StateGovernment
 func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterface) sc.Response {
 
-
-
-
 	fmt.Printf("- start getHistoryForStateGovernment\n")
-	Type:= "rice"
-     // buffer is a JSON array containing historic values for the marble
+	Type := "rice"
+	// buffer is a JSON array containing historic values for the marble
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	bArrayMemberAlreadyWritten := false
 
-	ResultIterator, err := stub.GetStateByPartialCompositeKey("stType~stQuantity~stid", []string{Type})
+	ResultIterator, err := stub.GetStateByPartialCompositeKey("stType-stQuantity-stid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -378,17 +372,14 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -403,7 +394,7 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -413,22 +404,21 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForstateGovernment returning:\n%s\n", buffer.String())
 
 	}
@@ -437,14 +427,14 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 
 	Type = "wheat"
 
-	ResultIterator, err = stub.GetStateByPartialCompositeKey("stType~stQuantity~stid", []string{Type})
+	ResultIterator, err = stub.GetStateByPartialCompositeKey("stType-stQuantity-stid", []string{Type})
 	if err != nil {
 		return shim.Error(err.Error())
 	}
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -458,17 +448,14 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 
 		fmt.Printf("- found a foodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -483,7 +470,7 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -493,33 +480,26 @@ func (cc *Chaincode) getHistoryForStateGOvernment(stub shim.ChaincodeStubInterfa
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForStateGovernment returning:\n%s\n", buffer.String())
 
 	}
 
-
-
 	buffer.WriteString("]")
-
-	
-
-
 
 	return shim.Success(buffer.Bytes())
 }
@@ -552,4 +532,3 @@ func authenticateStategov(mspID string, certCN string) bool {
 func authenticateCentralgov(mspID string, certCN string) bool {
 	return (mspID == "CentralGovernmentMSP") && (certCN == "ca.central_gov.example.com")
 }
-

@@ -311,10 +311,10 @@ render() {
        <Button style={{display:"inline-block",alignItems:"horizontal"}} variant='contained' color='primary' onClick={this.centralhistory} >Central Government History </Button>
        <br />
        <br/>
-       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.statehistory}>State Government History </Button><br />
-       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.districtoff}>District Office History</Button><br />
-       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.ration}> Ration Shop History</Button><br />
-       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.citizen}>Citizen History</Button> <br />
+       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.statehistory}>State Government History </Button><br /><br/>
+       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.districthistory}>District Office History</Button><br /><br/>
+       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.rationhistory}> Ration Shop History</Button><br /><br/>
+       <Button style={{display:"inline-block"}} variant='contained' color='primary' onClick={this.citizenhistory}>Citizen History</Button> <br /><br/>
 
        
 

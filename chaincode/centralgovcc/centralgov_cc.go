@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
-	"bytes"
 	"time"
 
 	"bitbucket.org/mediumblockchain/m3/common/util"
@@ -22,7 +22,7 @@ type Chaincode struct {
 type foodgrain struct {
 	ID       string `json:"ID"`
 	TYPE     string `json:"TYPE"`
-	Quantity string `json:"quantity"`
+	Quantity string `json:"Quantity"`
 	Quality  string `json:"Quality"`
 	Holder   string `json:"Holder"`
 }
@@ -44,9 +44,9 @@ func (cc *Chaincode) Invoke(stub shim.ChaincodeStubInterface) sc.Response {
 		return cc.getWheatCount(stub, params)
 	} else if fcn == "transferTOState" {
 		return cc.transferTOState(stub, params)
-	} else if fcn == "getHistoryForCentralGOvernment"{
+	} else if fcn == "getHistoryForCentralGOvernment" {
 		return cc.getHistoryForCentralGOvernment(stub)
-	}else {
+	} else {
 		fmt.Println("INvoke() did not find func: " + fcn)
 		return shim.Error("Received unknown function invocation!")
 	}
@@ -351,12 +351,9 @@ func (cc *Chaincode) transferTOState(stub shim.ChaincodeStubInterface, params []
 //function to get history of transactions
 func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInterface) sc.Response {
 
-
-
-
 	fmt.Printf("- start getHistoryForCentralGovernment\n")
-	Type:= "rice"
-     // buffer is a JSON array containing historic values for the marble
+	Type := "rice"
+	// buffer is a JSON array containing historic values for the marble
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	bArrayMemberAlreadyWritten := false
@@ -368,7 +365,7 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -382,17 +379,14 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 
 		fmt.Printf("- found a goodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -407,7 +401,7 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -417,22 +411,21 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForCentralGovernment returning:\n%s\n", buffer.String())
 
 	}
@@ -448,7 +441,7 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 
 	defer ResultIterator.Close()
 
-	for ResultIterator.HasNext(){
+	for ResultIterator.HasNext() {
 
 		responseRange, err := ResultIterator.Next()
 		if err != nil {
@@ -462,17 +455,14 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 
 		fmt.Printf("- found a goodgrain from index:%s\n", objectType)
 
-		id:=  compositeKeyPart[2]
+		id := compositeKeyPart[2]
 
 		resultsIterator, err := stub.GetHistoryForKey(id)
 		if err != nil {
 			return shim.Error(err.Error())
 		}
 		defer resultsIterator.Close()
-	
-		
 
-	
 		// bArrayMemberAlreadyWritten = false
 		for resultsIterator.HasNext() {
 			response, err := resultsIterator.Next()
@@ -487,7 +477,7 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 			buffer.WriteString("\"")
 			buffer.WriteString(response.TxId)
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"Value\":")
 			// if it was a delete operation on given key, then we need to set the
 			//corresponding value null. Else, we will write the response.Value
@@ -497,33 +487,26 @@ func (cc *Chaincode) getHistoryForCentralGOvernment(stub shim.ChaincodeStubInter
 			} else {
 				buffer.WriteString(string(response.Value))
 			}
-	
+
 			buffer.WriteString(", \"Timestamp\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(time.Unix(response.Timestamp.Seconds, int64(response.Timestamp.Nanos)).String())
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString(", \"IsDelete\":")
 			buffer.WriteString("\"")
 			buffer.WriteString(strconv.FormatBool(response.IsDelete))
 			buffer.WriteString("\"")
-	
+
 			buffer.WriteString("}")
 			bArrayMemberAlreadyWritten = true
 		}
-		
-	
+
 		fmt.Printf("- getHistoryForCentralGovernment returning:\n%s\n", buffer.String())
 
 	}
 
-
-
 	buffer.WriteString("]")
-
-	
-
-
 
 	return shim.Success(buffer.Bytes())
 }

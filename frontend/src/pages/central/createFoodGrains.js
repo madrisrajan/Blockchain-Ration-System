@@ -88,6 +88,7 @@ render() {
             <TextField
               label='Quality'
               variant='outlined'
+              color='primary'
               onChange={(event) => {
                   this.setState({
                       Quality : event.target.value,
