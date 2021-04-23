@@ -12,7 +12,7 @@ class App extends Component {
 
 
     async componentDidMount()  {
-        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || localStorage.getItem('usergrp')!='central_gov') this.setState({ redirect: <Redirect to="/login" /> });
+        if (!localStorage.getItem("session") || localStorage.getItem("session")!="ok" || (localStorage.getItem('usergrp')!='central_gov' && localStorage.getItem('usergrp')!='state_gov' && localStorage.getItem('usergrp')!='district_office' && localStorage.getItem('usergrp')!='ration_shops' )) this.setState({ redirect: <Redirect to="/login" /> });
         console.log(localStorage.getItem("session"));
 
     }
@@ -73,16 +73,18 @@ class App extends Component {
 
           
           <Button 
-          variant='contained' color = 'primary' onClick={this.viewcitizen}>Enter Rationcard Number</Button>
+          variant='contained' color = 'primary' onClick={this.viewcitizen}>Submit</Button>
         
         <br />
         <br />
          
-        <TextField disabled variant='outlined' value={this.state && this.state.profile && this.state.profile.Name}>Name </TextField><br/>
-        <TextField disabled variant='outlined' value={this.state && this.state.profile && this.state.profile.DOB}>Name </TextField><br/>
-        <TextField disabled variant='outlined' value={this.state && this.state.profile && this.state.profile.Address}>Name </TextField><br/>
-        <TextField disabled variant='outlined' value={this.state && this.state.profile && this.state.profile.Gender}>Name </TextField><br/>
-        <TextField disabled variant='outlined' value={this.state && this.state.profile && this.state.profile.ID}>Name </TextField>
+       <h4>Name : {this.state && this.state.profile && this.state.profile.Name}</h4> 
+        <h4>DOB : {this.state && this.state.profile && this.state.profile.DOB}</h4>
+        <h4>Address : {this.state && this.state.profile && this.state.profile.Address}</h4>
+        <h4>Gender : {this.state && this.state.profile && this.state.profile.Gender}</h4>
+        <h4>Mobile Number : {this.state && this.state.profile && this.state.profile.MobileNumber}</h4>
+        <h4>Age : {this.state && this.state.profile && this.state.profile.Age}</h4>
+        
         
         </div>
         

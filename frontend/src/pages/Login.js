@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText } from "@material-ui/core";
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
 import formbg from '../formbg.jpg'
 
 
@@ -132,6 +132,14 @@ render() {
             </div>
 
         </div>    
+
+          <br/>
+            <br/>
+            <br/>
+            <h4>New User ?</h4>
+            <Link to='/signup'>
+            <Button variant='contained' color='primary'>SignUp</Button>
+            </Link>
 
             
             

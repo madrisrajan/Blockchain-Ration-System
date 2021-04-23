@@ -77,12 +77,17 @@ render() {
         </Link>
           <br />
           <br />
+          <Link to='/history'>
+        <Button variant='contained' color='primary'  >View History</Button>
+        </Link>
+        <br />
+        <br />
 
-          <Button variant='contained' color='primary'>
+          {/* <Button variant='contained' color='primary'>
           View Citizen Profile
           </Button>
           <br />
-          <br />
+          <br /> */}
         </div>
     )
 }
