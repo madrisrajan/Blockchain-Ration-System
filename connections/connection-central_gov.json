@@ -1,0 +1,45 @@
+{
+    "name": "supply-chain-producer",
+    "version": "1.0.0",
+    "client": {
+        "organization": "central_gov",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "central_gov": {
+            "mspid": "CentralGovernmentMSP",
+            "peers": ["peer0.central_gov.lean.com"],
+            "certificateAuthorities": ["ca.central_gov.lean.com"]
+        }
+    },
+    "peers": {
+        "peer0.central_gov.lean.com": {
+            "url": "grpcs://localhost:7051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICdTCCAhugAwIBAgIQUDX2t5SV252C4l5TZBwF+TAKBggqhkjOPQQDAjCBhDEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIDAeBgNVBAoMF2NlbnRyYWxfZ292LmV4YW1wbGUuY29tMSYwJAYD\nVQQDDB10bHNjYS5jZW50cmFsX2dvdi5leGFtcGxlLmNvbTAeFw0yMTA0MDYyMDQy\nMDBaFw0zMTA0MDQyMDQyMDBaMIGEMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2Fs\naWZvcm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEgMB4GA1UECgwXY2VudHJh\nbF9nb3YuZXhhbXBsZS5jb20xJjAkBgNVBAMMHXRsc2NhLmNlbnRyYWxfZ292LmV4\nYW1wbGUuY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEvffKTv+OuO0vBhQ5\nVM5i4mECbb1qxUvEucy/ysCfVFTnh38uHkTaqENWU6ZvZoagR0dMhupSv3snKO63\nYoom5KNtMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggr\nBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCCSAb08z77kJfPxTt3B\novBnYkT1/hXqI/el+CtEksg8/jAKBggqhkjOPQQDAgNIADBFAiEA/82lS+90yVmV\nVg6iO8NcypTQ+OyshqN5Nzv6rl9f7lECIDLMjH/9sM/z7uYLTKghUMR2FUh8XWlK\n3IzznCdSBoBZ\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.central_gov.lean.com",
+                "hostnameOverride": "peer0.central_gov.lean.com"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.central_gov.lean.com": {
+            "url": "https://localhost:7054",
+            "caName": "ca-central_gov",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIICbjCCAhWgAwIBAgIQFWLEp0Rf0nKFl4dNdYMymjAKBggqhkjOPQQDAjCBgTEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xIDAeBgNVBAoMF2NlbnRyYWxfZ292LmV4YW1wbGUuY29tMSMwIQYD\nVQQDDBpjYS5jZW50cmFsX2dvdi5leGFtcGxlLmNvbTAeFw0yMTA0MDYyMDQyMDBa\nFw0zMTA0MDQyMDQyMDBaMIGBMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZv\ncm5pYTEWMBQGA1UEBxMNU2FuIEZyYW5jaXNjbzEgMB4GA1UECgwXY2VudHJhbF9n\nb3YuZXhhbXBsZS5jb20xIzAhBgNVBAMMGmNhLmNlbnRyYWxfZ292LmV4YW1wbGUu\nY29tMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfRqgBmCRWJhIqobOEunPgruN\nlvMkFlpolg433/7KNz0ucO2CrrsogOW4qOSP0KnNhTJQl4oQRc3+glAxneY43qNt\nMGswDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcD\nATAPBgNVHRMBAf8EBTADAQH/MCkGA1UdDgQiBCA4Nv/NQj29pOaQw9sgsRjgX8PF\nt7pcpQ83BoaCYmvtzjAKBggqhkjOPQQDAgNHADBEAiBCTbMV4UltOP8bioFu8edO\nOT96ArmBjRm81M0wWpdwbAIgGi6h9dagj30MUi45aJU1XAhGZ2jnXscTcITML3ot\nT/0=\n-----END CERTIFICATE-----\n"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}
